@@ -1,0 +1,62 @@
+# Python: Bytecode und virtuelle Umgebungen
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.conda/
+
+# Python: Build-, Test- und Analyseartefakte
+build/
+dist/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.ipynb_checkpoints/
+.spyproject/
+
+# Java: kompilierte Klassen und Build-Ausgaben
+*.class
+target/
+.gradle/
+.kotlin/
+out/
+/oop1/**/bin/
+/oop1/**/classes/
+hs_err_pid*
+replay_pid*
+
+# Eclipse-Workspace und lokale IDE-Einstellungen
+.metadata/
+.recommenders/
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+# Lokale Konfiguration (Vorlagen bleiben versionierbar)
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Betriebssystem- und temporaere Dateien
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+*.tmp
+*.swp
+*.swo
+*~

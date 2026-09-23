@@ -1,0 +1,40 @@
+name: HTU26H
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - control
+  - flake8
+  - flake8-comprehensions
+  - gmpy2
+  - hypothesis
+  - ipympl
+  - jupyter
+  - jupyter_client
+  - jupyterlab
+  - notebook
+  - librosa
+  - mpmath
+  - openpyxl
+  - plotly
+  - pip
+  - pycodestyle
+  - pyfirmata
+  - pyflakes
+  - pypdf
+  - pytest
+  - ruff
+  - seaborn
+  - snakeviz
+  - spyder
+  - statsmodels
+  - sympy
+  - tabulate
+  - tenacity
+  - pip:
+    - hanspitools
+    - ltspice
+    - pyltspice
+    - pyfemm
+    - signalflowgrapher
+
