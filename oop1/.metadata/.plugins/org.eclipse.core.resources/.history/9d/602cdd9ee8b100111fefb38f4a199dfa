@@ -1,0 +1,10 @@
+public class HelloWorld {
+	public static void main(String[] args) {
+		System.out.println("Hello World! Yelling from Java.");
+
+		int a = 0;
+		int result = a + 5;
+
+		System.out.println("The Result is: " + result);
+	}
+}

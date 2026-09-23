@@ -1,0 +1,13 @@
+public class HelloWorld {
+	public static void main(String[] args) {
+		System.out.println("Hello World! Yelling from Java.");
+		int a = 5;
+		int result = 0;
+
+		for (int i = 0; i < 5; i++) {
+			result += a;
+			System.out.println("Part result: " + result);
+		}
+		System.out.println("The final Result is: " + result);
+	}
+}
