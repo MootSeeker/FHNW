@@ -1,0 +1,185 @@
+\documentclass[8pt,a4paper]{extarticle}
+
+% ============================================================
+% Formelsammlung – Allgemeine Elektrotechnik 1 (AET1)
+% Ziel: max. 2 A4-Seiten (bedruckbar beidseitig auf 1 Blatt)
+% ============================================================
+
+\usepackage[a4paper,margin=8mm,landscape]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+
+\setlength{\parindent}{0pt}
+\setlength{\columnsep}{6mm}
+\setlist{nosep, leftmargin=1.1em, itemsep=0pt, topsep=1pt}
+
+% Kompakte Überschriften
+\titleformat{\section}{\normalfont\bfseries\small\color{blue!60!black}}{\thesection}{0.5em}{}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+\titleformat{\subsection}{\normalfont\bfseries\footnotesize}{\thesubsection}{0.5em}{}
+\titlespacing*{\subsection}{0pt}{3pt}{1pt}
+
+% Kurzbefehl für Formel-Boxen
+\newcommand{\formel}[1]{\[#1\]}
+
+\pagestyle{empty}
+
+\begin{document}
+\small
+
+\begin{center}
+{\bfseries\normalsize Formelsammlung AET1 -- Allgemeine Elektrotechnik 1} \\
+{\footnotesize Name: \underline{\hspace{3cm}} \quad Modul: AET1 \quad Stand: \today}
+\end{center}
+\vspace{2pt}
+
+\begin{multicols}{3}
+
+% ============================================================
+% TODO: Themen folgen noch -- untenstehende Kapitel sind
+% Platzhalter mit typischen AET1-Inhalten und koennen
+% ersetzt / ergaenzt / geloescht werden.
+% ============================================================
+
+\section{Grundgrößen}
+\begin{itemize}
+  \item Ladung: $Q = I \cdot t$ \quad [\si{\coulomb}]
+  \item Strom: $I = \dfrac{Q}{t} = \dfrac{dQ}{dt}$
+  \item Spannung: $U = \dfrac{W}{Q}$
+  \item Leistung: $P = U \cdot I$
+  \item Arbeit: $W = P \cdot t = U \cdot I \cdot t$
+\end{itemize}
+
+\section{Ohmsches Gesetz}
+\formel{U = R \cdot I \qquad R = \dfrac{U}{I} \qquad I = \dfrac{U}{R}}
+\begin{itemize}
+  \item Leitwert: $G = \dfrac{1}{R}$ \quad [\si{\siemens}]
+  \item Widerstand mit Geometrie: $R = \rho \cdot \dfrac{l}{A} = \dfrac{l}{\kappa \cdot A}$
+  \item Temperaturabhängigkeit: $R(\vartheta) = R_0 (1 + \alpha \Delta\vartheta)$
+\end{itemize}
+
+\section{Kirchhoffsche Gesetze}
+\textbf{Knotenregel (1. KG):}
+\formel{\sum I_{\text{ein}} = \sum I_{\text{aus}}}
+\textbf{Maschenregel (2. KG):}
+\formel{\sum_k U_k = 0}
+
+\section{Widerstandsnetzwerke}
+\textbf{Reihenschaltung:}
+\formel{R_{ges} = R_1 + R_2 + \dots + R_n}
+\textbf{Parallelschaltung:}
+\formel{\dfrac{1}{R_{ges}} = \dfrac{1}{R_1} + \dfrac{1}{R_2} + \dots}
+Für 2 Widerstände: $R_{ges} = \dfrac{R_1 R_2}{R_1+R_2}$
+
+\textbf{Spannungsteiler (unbelastet):}
+\formel{U_2 = U \cdot \dfrac{R_2}{R_1+R_2}}
+
+\textbf{Stromteiler:}
+\formel{I_1 = I \cdot \dfrac{R_2}{R_1+R_2}}
+
+\section{Leistung \& Energie}
+\begin{itemize}
+  \item $P = U \cdot I = I^2 R = \dfrac{U^2}{R}$
+  \item Wirkungsgrad: $\eta = \dfrac{P_{ab}}{P_{zu}}$
+  \item Maximale Leistungsanpassung: $R_L = R_i$
+\end{itemize}
+
+\columnbreak
+
+\section{Kondensator}
+\begin{itemize}
+  \item $Q = C \cdot U$
+  \item Plattenkondensator: $C = \varepsilon_0 \varepsilon_r \dfrac{A}{d}$
+  \item Energie: $W = \dfrac{1}{2} C U^2 = \dfrac{1}{2} Q U$
+\end{itemize}
+\textbf{Reihenschaltung:}
+\formel{\dfrac{1}{C_{ges}} = \dfrac{1}{C_1} + \dfrac{1}{C_2} + \dots}
+\textbf{Parallelschaltung:}
+\formel{C_{ges} = C_1 + C_2 + \dots}
+\textbf{Laden/Entladen (RC):}
+\formel{u_C(t) = U_0 \left(1 - e^{-t/\tau}\right), \quad \tau = RC}
+
+\section{Spule / Induktivität}
+\begin{itemize}
+  \item $u_L = L \dfrac{di}{dt}$
+  \item Energie: $W = \dfrac{1}{2} L I^2$
+  \item Zylinderspule: $L = \mu_0 \mu_r \dfrac{N^2 A}{l}$
+\end{itemize}
+\textbf{Reihenschaltung:} $L_{ges} = L_1 + L_2 + \dots$
+
+\textbf{Parallelschaltung:} $\dfrac{1}{L_{ges}} = \dfrac{1}{L_1} + \dfrac{1}{L_2} + \dots$
+
+\textbf{Ein-/Ausschaltvorgang (RL):}
+\formel{i_L(t) = I_0 \left(1 - e^{-t/\tau}\right), \quad \tau = \dfrac{L}{R}}
+
+\section{Quellen}
+\textbf{Reale Spannungsquelle:}
+\formel{U = U_0 - R_i \cdot I}
+\textbf{Reale Stromquelle:}
+\formel{I = I_0 - \dfrac{U}{R_i}}
+Quellenumwandlung: $U_0 = I_0 \cdot R_i$
+
+\section{Zweipoltheorie}
+\begin{itemize}
+  \item \textbf{Ersatzspannungsquelle (Thévenin):} $U_0 = U_{Leerlauf}$, $R_i = R_{ab}$ (Quellen passiviert)
+  \item \textbf{Ersatzstromquelle (Norton):} $I_0 = I_{Kurzschluss}$
+\end{itemize}
+
+\columnbreak
+
+\section{Elektrisches Feld}
+\begin{itemize}
+  \item Feldstärke: $E = \dfrac{U}{d}$
+  \item Kraft: $F = Q \cdot E$
+  \item Verschiebungsdichte: $D = \varepsilon_0 \varepsilon_r E$
+\end{itemize}
+
+\section{Magnetisches Feld}
+\begin{itemize}
+  \item Durchflutungsgesetz: $\Theta = N \cdot I$
+  \item Feldstärke: $H = \dfrac{N I}{l}$
+  \item Flussdichte: $B = \mu_0 \mu_r H$
+  \item Fluss: $\Phi = B \cdot A$
+  \item Induktionsgesetz: $u_i = -N \dfrac{d\Phi}{dt}$
+  \item Kraft auf Leiter: $F = B \cdot I \cdot l$
+\end{itemize}
+
+\section{Wechselstromgrößen}
+\begin{itemize}
+  \item Momentanwert: $u(t) = \hat{u}\sin(\omega t + \varphi)$
+  \item Kreisfrequenz: $\omega = 2\pi f = \dfrac{2\pi}{T}$
+  \item Effektivwert: $U_{eff} = \dfrac{\hat{u}}{\sqrt{2}}$
+  \item Mittelwert (Gleichrichtwert): $\bar{u} = \dfrac{2}{\pi}\hat{u}$
+\end{itemize}
+
+\section{Wichtige Konstanten}
+\begin{itemize}
+  \item $\varepsilon_0 = \SI{8.854e-12}{\farad\per\meter}$
+  \item $\mu_0 = 4\pi \times 10^{-7}\,\si{\henry\per\meter}$
+  \item Elementarladung: $e = \SI{1.602e-19}{\coulomb}$
+\end{itemize}
+
+\section{SI-Vorsätze}
+\begin{tabular}{@{}ll@{}}
+  p (pico) & $10^{-12}$ \\
+  n (nano) & $10^{-9}$ \\
+  µ (mikro) & $10^{-6}$ \\
+  m (milli) & $10^{-3}$ \\
+  k (kilo) & $10^{3}$ \\
+  M (mega) & $10^{6}$ \\
+  G (giga) & $10^{9}$ \\
+\end{tabular}
+
+\end{multicols}
+
+\end{document}
