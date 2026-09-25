@@ -1,185 +1,206 @@
-\documentclass[8pt,a4paper]{extarticle}
+\documentclass[9pt,a4paper]{extarticle}
 
 % ============================================================
 % Formelsammlung – Allgemeine Elektrotechnik 1 (AET1)
-% Ziel: max. 2 A4-Seiten (bedruckbar beidseitig auf 1 Blatt)
+% Layout: Kachel-Raster (tcolorbox), max. 2 A4-Seiten (Querformat)
+%
+% Hinweis: Das Raster wird HIER manuell mit fixer Breite pro Kachel
+% gebaut (statt \tcbraster), weil die automatische tcolorbox-Raster-
+% Umgebung im Test nicht zuverlässig mehrspaltig umgebrochen hat.
 % ============================================================
 
-\usepackage[a4paper,margin=8mm,landscape]{geometry}
+\usepackage[a4paper,margin=5mm,landscape]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
 \usepackage{amsmath,amssymb}
 \usepackage{siunitx}
-\usepackage{multicol}
+\usepackage[skins]{tcolorbox}
 \usepackage{enumitem}
-\usepackage{titlesec}
-\usepackage{tikz}
 \usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{array}
 
 \setlength{\parindent}{0pt}
-\setlength{\columnsep}{6mm}
-\setlist{nosep, leftmargin=1.1em, itemsep=0pt, topsep=1pt}
-
-% Kompakte Überschriften
-\titleformat{\section}{\normalfont\bfseries\small\color{blue!60!black}}{\thesection}{0.5em}{}
-\titlespacing*{\section}{0pt}{4pt}{2pt}
-\titleformat{\subsection}{\normalfont\bfseries\footnotesize}{\thesubsection}{0.5em}{}
-\titlespacing*{\subsection}{0pt}{3pt}{1pt}
-
-% Kurzbefehl für Formel-Boxen
-\newcommand{\formel}[1]{\[#1\]}
-
+\setlist{nosep, leftmargin=0.9em, itemsep=0pt, topsep=1pt}
 \pagestyle{empty}
 
+% Kurzbefehl für zentrierte Formel-Zeilen
+\newcommand{\formel}[1]{\[#1\]}
+
+% ---- Themenfarben --------------------------------------------------
+\definecolor{cGrund}{HTML}{2C5AA0}   % Grundlagen / Gleichstrom
+\definecolor{cNetz}{HTML}{1F8A70}    % Netzwerke / Quellen
+\definecolor{cBauteil}{HTML}{B5651D} % Bauelemente C/L
+\definecolor{cFeld}{HTML}{7B4EA3}    % Felder
+\definecolor{cWechsel}{HTML}{C0392B} % Wechselstrom
+\definecolor{cRef}{HTML}{555555}     % Konstanten / Einheiten
+
+% ---- Manuelles 4-Spalten-Raster ------------------------------------
+% Breite: (Textbreite 287mm - 3x Spaltenabstand 2mm) / 4 Spalten
+\newlength{\tilew}
+\setlength{\tilew}{69.25mm}
+\newcommand{\tilegap}{\hspace{2mm}}
+
+\tcbset{
+  tilestyle/.style={
+    nobeforeafter, valign=top, halign=left,
+    width=\tilew, height=90mm,
+    boxrule=0.4pt, arc=0pt,
+    left=2pt, right=2pt, top=1.5pt, bottom=1.5pt, boxsep=0pt,
+    fonttitle=\bfseries\scriptsize, coltitle=white,
+    title
+  }
+}
+% #1 Farbe  #2 Titel  #3 Inhalt
+\newcommand{\tile}[3]{%
+  \begin{tcolorbox}[tilestyle, colframe=#1, colback=#1!4, colbacktitle=#1, title={#2}]
+    #3
+  \end{tcolorbox}%
+}
+
 \begin{document}
-\small
+\scriptsize
 
-\begin{center}
-{\bfseries\normalsize Formelsammlung AET1 -- Allgemeine Elektrotechnik 1} \\
-{\footnotesize Name: \underline{\hspace{3cm}} \quad Modul: AET1 \quad Stand: \today}
-\end{center}
-\vspace{2pt}
-
-\begin{multicols}{3}
+{\centering\bfseries\normalsize Formelsammlung AET1 -- Allgemeine Elektrotechnik 1\par}
+\vspace{1mm}
 
 % ============================================================
-% TODO: Themen folgen noch -- untenstehende Kapitel sind
-% Platzhalter mit typischen AET1-Inhalten und koennen
-% ersetzt / ergaenzt / geloescht werden.
+% SEITE 1 -- Gleichstromtechnik / Netzwerke
+% TODO: Themen folgen noch -- Platzhalter mit typischen AET1-Inhalten,
+% koennen ersetzt / ergaenzt / geloescht werden.
 % ============================================================
+\noindent
+\tile{cGrund}{Grundgrößen}{%
+  \begin{itemize}
+    \item Ladung: $Q = I \cdot t$ \ [\si{\coulomb}]
+    \item Strom: $I = \dfrac{Q}{t} = \dfrac{dQ}{dt}$
+    \item Spannung: $U = \dfrac{W}{Q}$
+    \item Leistung: $P = U \cdot I$
+    \item Arbeit: $W = P \cdot t = U I t$
+  \end{itemize}
+}\tilegap
+\tile{cGrund}{Ohmsches Gesetz}{%
+  \formel{U = R I \quad R = \dfrac{U}{I} \quad I = \dfrac{U}{R}}
+  \begin{itemize}
+    \item Leitwert: $G = \dfrac{1}{R}$ \ [\si{\siemens}]
+    \item $R = \rho \dfrac{l}{A} = \dfrac{l}{\kappa A}$
+    \item $R(\vartheta) = R_0 (1+\alpha\Delta\vartheta)$
+  \end{itemize}
+}\tilegap
+\tile{cGrund}{Kirchhoff}{%
+  \textbf{Knotenregel:}
+  \formel{\textstyle\sum I_{\text{ein}} = \sum I_{\text{aus}}}
+  \textbf{Maschenregel:}
+  \formel{\textstyle\sum_k U_k = 0}
+}\tilegap
+\tile{cNetz}{Widerstandsnetzwerke}{%
+  Reihe: $R_{ges} = R_1+R_2+\dots$
 
-\section{Grundgrößen}
-\begin{itemize}
-  \item Ladung: $Q = I \cdot t$ \quad [\si{\coulomb}]
-  \item Strom: $I = \dfrac{Q}{t} = \dfrac{dQ}{dt}$
-  \item Spannung: $U = \dfrac{W}{Q}$
-  \item Leistung: $P = U \cdot I$
-  \item Arbeit: $W = P \cdot t = U \cdot I \cdot t$
-\end{itemize}
+  Parallel: $\dfrac{1}{R_{ges}} = \dfrac{1}{R_1}+\dfrac{1}{R_2}+\dots$
 
-\section{Ohmsches Gesetz}
-\formel{U = R \cdot I \qquad R = \dfrac{U}{I} \qquad I = \dfrac{U}{R}}
-\begin{itemize}
-  \item Leitwert: $G = \dfrac{1}{R}$ \quad [\si{\siemens}]
-  \item Widerstand mit Geometrie: $R = \rho \cdot \dfrac{l}{A} = \dfrac{l}{\kappa \cdot A}$
-  \item Temperaturabhängigkeit: $R(\vartheta) = R_0 (1 + \alpha \Delta\vartheta)$
-\end{itemize}
+  2 Widerst.: $R_{ges}=\dfrac{R_1 R_2}{R_1+R_2}$
+}
 
-\section{Kirchhoffsche Gesetze}
-\textbf{Knotenregel (1. KG):}
-\formel{\sum I_{\text{ein}} = \sum I_{\text{aus}}}
-\textbf{Maschenregel (2. KG):}
-\formel{\sum_k U_k = 0}
+\vspace{3mm}\par\noindent
+\tile{cNetz}{Spannungs-/Stromteiler}{%
+  Spannungsteiler (unbelastet):
+  \formel{U_2 = U \cdot \dfrac{R_2}{R_1+R_2}}
+  Stromteiler:
+  \formel{I_1 = I \cdot \dfrac{R_2}{R_1+R_2}}
+}\tilegap
+\tile{cNetz}{Leistung \& Energie}{%
+  \begin{itemize}
+    \item $P = UI = I^2R = \dfrac{U^2}{R}$
+    \item Wirkungsgrad: $\eta = \dfrac{P_{ab}}{P_{zu}}$
+    \item Leistungsanpassung: $R_L = R_i$
+  \end{itemize}
+}\tilegap
+\tile{cNetz}{Quellen}{%
+  Reale Spannungsquelle: \ $U = U_0 - R_i I$
 
-\section{Widerstandsnetzwerke}
-\textbf{Reihenschaltung:}
-\formel{R_{ges} = R_1 + R_2 + \dots + R_n}
-\textbf{Parallelschaltung:}
-\formel{\dfrac{1}{R_{ges}} = \dfrac{1}{R_1} + \dfrac{1}{R_2} + \dots}
-Für 2 Widerstände: $R_{ges} = \dfrac{R_1 R_2}{R_1+R_2}$
+  Reale Stromquelle: \ $I = I_0 - \dfrac{U}{R_i}$
 
-\textbf{Spannungsteiler (unbelastet):}
-\formel{U_2 = U \cdot \dfrac{R_2}{R_1+R_2}}
+  Umwandlung: $U_0 = I_0 R_i$
+}\tilegap
+\tile{cNetz}{Zweipoltheorie}{%
+  \begin{itemize}
+    \item \textbf{Thévenin:} $U_0=U_{Leerlauf}$, $R_i=R_{ab}$ (Quellen passiviert)
+    \item \textbf{Norton:} $I_0=I_{Kurzschluss}$
+  \end{itemize}
+}
 
-\textbf{Stromteiler:}
-\formel{I_1 = I \cdot \dfrac{R_2}{R_1+R_2}}
+\newpage
 
-\section{Leistung \& Energie}
-\begin{itemize}
-  \item $P = U \cdot I = I^2 R = \dfrac{U^2}{R}$
-  \item Wirkungsgrad: $\eta = \dfrac{P_{ab}}{P_{zu}}$
-  \item Maximale Leistungsanpassung: $R_L = R_i$
-\end{itemize}
+% ============================================================
+% SEITE 2 -- Bauelemente / Felder / Wechselstrom / Referenz
+% ============================================================
+\noindent
+\tile{cBauteil}{Kondensator}{%
+  \begin{itemize}
+    \item $Q = CU$
+    \item Platten-Kond.: $C = \varepsilon_0\varepsilon_r\dfrac{A}{d}$
+    \item Energie: $W=\tfrac{1}{2}CU^2=\tfrac{1}{2}QU$
+  \end{itemize}
+  Reihe: $\dfrac{1}{C_{ges}}=\dfrac{1}{C_1}+\dfrac{1}{C_2}+\dots$
 
-\columnbreak
+  Parallel: $C_{ges}=C_1+C_2+\dots$
+}\tilegap
+\tile{cBauteil}{RC-Vorgang}{%
+  \formel{u_C(t) = U_0\!\left(1-e^{-t/\tau}\right)}
+  \formel{\tau = RC}
+}\tilegap
+\tile{cBauteil}{Spule / Induktivität}{%
+  \begin{itemize}
+    \item $u_L = L\dfrac{di}{dt}$
+    \item Energie: $W=\tfrac{1}{2}LI^2$
+    \item Zylinderspule: $L=\mu_0\mu_r\dfrac{N^2A}{l}$
+  \end{itemize}
+  Reihe: $L_{ges}=L_1+L_2+\dots$
 
-\section{Kondensator}
-\begin{itemize}
-  \item $Q = C \cdot U$
-  \item Plattenkondensator: $C = \varepsilon_0 \varepsilon_r \dfrac{A}{d}$
-  \item Energie: $W = \dfrac{1}{2} C U^2 = \dfrac{1}{2} Q U$
-\end{itemize}
-\textbf{Reihenschaltung:}
-\formel{\dfrac{1}{C_{ges}} = \dfrac{1}{C_1} + \dfrac{1}{C_2} + \dots}
-\textbf{Parallelschaltung:}
-\formel{C_{ges} = C_1 + C_2 + \dots}
-\textbf{Laden/Entladen (RC):}
-\formel{u_C(t) = U_0 \left(1 - e^{-t/\tau}\right), \quad \tau = RC}
+  Parallel: $\dfrac{1}{L_{ges}}=\dfrac{1}{L_1}+\dfrac{1}{L_2}+\dots$
+}\tilegap
+\tile{cBauteil}{RL-Vorgang}{%
+  \formel{i_L(t) = I_0\!\left(1-e^{-t/\tau}\right)}
+  \formel{\tau = \dfrac{L}{R}}
+}
 
-\section{Spule / Induktivität}
-\begin{itemize}
-  \item $u_L = L \dfrac{di}{dt}$
-  \item Energie: $W = \dfrac{1}{2} L I^2$
-  \item Zylinderspule: $L = \mu_0 \mu_r \dfrac{N^2 A}{l}$
-\end{itemize}
-\textbf{Reihenschaltung:} $L_{ges} = L_1 + L_2 + \dots$
+\vspace{3mm}\par\noindent
+\tile{cFeld}{Elektrisches Feld}{%
+  \begin{itemize}
+    \item Feldstärke: $E = \dfrac{U}{d}$
+    \item Kraft: $F = QE$
+    \item Verschiebungsd.: $D=\varepsilon_0\varepsilon_r E$
+  \end{itemize}
+}\tilegap
+\tile{cFeld}{Magnetisches Feld}{%
+  \begin{itemize}
+    \item Durchflutung: $\Theta = NI$
+    \item Feldstärke: $H=\dfrac{NI}{l}$
+    \item Flussdichte: $B=\mu_0\mu_r H$
+    \item Fluss: $\Phi = BA$
+    \item Induktion: $u_i=-N\dfrac{d\Phi}{dt}$
+    \item Kraft: $F = BIl$
+  \end{itemize}
+}\tilegap
+\tile{cWechsel}{Wechselstromgrößen}{%
+  \begin{itemize}
+    \item $u(t)=\hat u\sin(\omega t+\varphi)$
+    \item $\omega = 2\pi f = \dfrac{2\pi}{T}$
+    \item Effektivwert: $U_{eff}=\dfrac{\hat u}{\sqrt2}$
+    \item Gleichrichtwert: $\bar u=\dfrac{2}{\pi}\hat u$
+  \end{itemize}
+}\tilegap
+\tile{cRef}{Konstanten \& SI-Vorsätze}{%
+  $\varepsilon_0=\SI{8.854e-12}{\farad\per\meter}$
 
-\textbf{Parallelschaltung:} $\dfrac{1}{L_{ges}} = \dfrac{1}{L_1} + \dfrac{1}{L_2} + \dots$
+  $\mu_0=4\pi\times10^{-7}\,\si{\henry\per\meter}$
 
-\textbf{Ein-/Ausschaltvorgang (RL):}
-\formel{i_L(t) = I_0 \left(1 - e^{-t/\tau}\right), \quad \tau = \dfrac{L}{R}}
+  $e=\SI{1.602e-19}{\coulomb}$
+  \vspace{2pt}
 
-\section{Quellen}
-\textbf{Reale Spannungsquelle:}
-\formel{U = U_0 - R_i \cdot I}
-\textbf{Reale Stromquelle:}
-\formel{I = I_0 - \dfrac{U}{R_i}}
-Quellenumwandlung: $U_0 = I_0 \cdot R_i$
-
-\section{Zweipoltheorie}
-\begin{itemize}
-  \item \textbf{Ersatzspannungsquelle (Thévenin):} $U_0 = U_{Leerlauf}$, $R_i = R_{ab}$ (Quellen passiviert)
-  \item \textbf{Ersatzstromquelle (Norton):} $I_0 = I_{Kurzschluss}$
-\end{itemize}
-
-\columnbreak
-
-\section{Elektrisches Feld}
-\begin{itemize}
-  \item Feldstärke: $E = \dfrac{U}{d}$
-  \item Kraft: $F = Q \cdot E$
-  \item Verschiebungsdichte: $D = \varepsilon_0 \varepsilon_r E$
-\end{itemize}
-
-\section{Magnetisches Feld}
-\begin{itemize}
-  \item Durchflutungsgesetz: $\Theta = N \cdot I$
-  \item Feldstärke: $H = \dfrac{N I}{l}$
-  \item Flussdichte: $B = \mu_0 \mu_r H$
-  \item Fluss: $\Phi = B \cdot A$
-  \item Induktionsgesetz: $u_i = -N \dfrac{d\Phi}{dt}$
-  \item Kraft auf Leiter: $F = B \cdot I \cdot l$
-\end{itemize}
-
-\section{Wechselstromgrößen}
-\begin{itemize}
-  \item Momentanwert: $u(t) = \hat{u}\sin(\omega t + \varphi)$
-  \item Kreisfrequenz: $\omega = 2\pi f = \dfrac{2\pi}{T}$
-  \item Effektivwert: $U_{eff} = \dfrac{\hat{u}}{\sqrt{2}}$
-  \item Mittelwert (Gleichrichtwert): $\bar{u} = \dfrac{2}{\pi}\hat{u}$
-\end{itemize}
-
-\section{Wichtige Konstanten}
-\begin{itemize}
-  \item $\varepsilon_0 = \SI{8.854e-12}{\farad\per\meter}$
-  \item $\mu_0 = 4\pi \times 10^{-7}\,\si{\henry\per\meter}$
-  \item Elementarladung: $e = \SI{1.602e-19}{\coulomb}$
-\end{itemize}
-
-\section{SI-Vorsätze}
-\begin{tabular}{@{}ll@{}}
-  p (pico) & $10^{-12}$ \\
-  n (nano) & $10^{-9}$ \\
-  µ (mikro) & $10^{-6}$ \\
-  m (milli) & $10^{-3}$ \\
-  k (kilo) & $10^{3}$ \\
-  M (mega) & $10^{6}$ \\
-  G (giga) & $10^{9}$ \\
-\end{tabular}
-
-\end{multicols}
+  \begin{tabular}{@{}llll@{}}
+    p:$10^{-12}$ & n:$10^{-9}$ & µ:$10^{-6}$ & m:$10^{-3}$ \\
+    k:$10^{3}$ & M:$10^{6}$ & G:$10^{9}$ &
+  \end{tabular}
+}
 
 \end{document}
