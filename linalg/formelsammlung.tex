@@ -129,6 +129,28 @@ Für $T(x)=Ax$ gilt $\kernel(T)=\{x:Ax=0\}$ und
 $\bild(T)=\{Ax:x\in\K^n\}$.
 Die Spalten von $A$ sind die Bilder der Standardbasisvektoren.
 
+\section*{Geraden: Parameterform und Geradengleichung}
+Eine Gerade durch $P=(p_1,p_2)$ mit Richtungsvektor
+$v=(v_1,v_2)\ne0$ hat die Parameterform
+\[
+  g:\quad \begin{pmatrix}x\\y\end{pmatrix}
+  =\begin{pmatrix}p_1\\p_2\end{pmatrix}
+  +t\begin{pmatrix}v_1\\v_2\end{pmatrix},
+  \qquad t\in\R.
+\]
+Für $v_1\ne0$ ergibt das nach dem Eliminieren von $t$ die
+Geradengleichung
+\[
+  y-p_2=\frac{v_2}{v_1}(x-p_1),
+  \qquad\text{also}\qquad y=mx+b,
+\]
+mit $m=v_2/v_1$ und $b=p_2-mp_1$. Allgemein gilt die
+Normalenform
+\[
+  v_2(x-p_1)-v_1(y-p_2)=0.
+\]
+Für $v_1=0$ ist die Gerade vertikal und lautet $x=p_1$.
+
 \section*{Eigenwerte und Eigenvektoren}
 Für $A\in\K^{n\times n}$ heißt $\lambda$ Eigenwert, falls ein
 $v\ne0$ mit $Av=\lambda v$ existiert. Berechnung:
