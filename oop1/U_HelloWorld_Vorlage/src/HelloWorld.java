@@ -19,11 +19,13 @@ public class HelloWorld {
 		System.out.printf("Float Number in Scientific: %.3f%n", scientificNumbers);
 
 		/* --- Special Java rules --- */
+		@SuppressWarnings("unused")
 		final double G = 9.81; // final is the same as const in C variable can not change it's value
 
 		/* --- Type Casting in Java --- */
 		// Generally the same as in C/C++
 		float fNumber = a; // int into float
+		@SuppressWarnings("unused")
 		double dNumber = fNumber; // Compiler doesn't like that one
 		fNumber = (float) 12.25;
 		fNumber = (float) 12.12e-3;
