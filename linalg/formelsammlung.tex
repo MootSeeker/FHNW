@@ -1,0 +1,164 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage[a4paper,margin=20mm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[expansion=false]{microtype}
+\usepackage{multicol}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist{nosep}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\rang}{\operatorname{rang}}
+\newcommand{\spur}{\operatorname{tr}}
+\newcommand{\kernel}{\operatorname{Ker}}
+\newcommand{\bild}{\operatorname{Bild}}
+\newcommand{\spann}{\operatorname{span}}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Formelsammlung Lineare Algebra}\\[2mm]
+  {\small Grundlagen \textbullet\ Matrizen \textbullet\ lineare Gleichungssysteme
+  \textbullet\ Vektorräume \textbullet\ Eigenwerte}
+\end{center}
+
+\begin{multicols}{2}
+
+\section*{Vektoren und Skalarprodukt}
+Für $u,v,w\in\R^n$ und $\lambda\in\R$ gilt
+\[
+  u\cdot v=\sum_{i=1}^{n}u_iv_i,\qquad
+  \|v\|_2=\sqrt{v\cdot v}=\sqrt{\sum_{i=1}^{n}v_i^2}.
+\]
+\[
+  u\perp v\iff u\cdot v=0,\qquad
+  \cos\varphi=\frac{u\cdot v}{\|u\|_2\|v\|_2}
+  \quad(u,v\ne0).
+\]
+Projektion auf $v\ne0$:
+\[
+  \operatorname{proj}_v(u)=\frac{u\cdot v}{v\cdot v}\,v.
+\]
+Für $u,v\in\R^3$ ist $u\times v$ orthogonal zu beiden;
+$\|u\times v\|$ ist der Flächeninhalt des aufgespannten
+Parallelogramms.
+
+\section*{Matrizen}
+Für $A\in\K^{m\times n}$ und $B\in\K^{n\times p}$:
+\[
+  (AB)_{ij}=\sum_{k=1}^{n}a_{ik}b_{kj},\qquad
+  (AB)^T=B^TA^T.
+\]
+Im Allgemeinen gilt $AB\ne BA$. Die Einheitsmatrix $I_n$ erfüllt
+$AI_n=I_mA=A$. Für invertierbare quadratische Matrizen:
+\[
+  AA^{-1}=A^{-1}A=I,\qquad
+  (AB)^{-1}=B^{-1}A^{-1}.
+\]
+Für $A=\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}$ gilt bei
+$ad-bc\ne0$:
+\[
+  A^{-1}=\frac{1}{ad-bc}
+  \begin{pmatrix}d&-b\\-c&a\end{pmatrix}.
+\]
+
+\section*{Determinante und Rang}
+\[
+  \det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc,
+  \qquad \det(AB)=\det(A)\det(B).
+\]
+Für quadratisches $A\in\K^{n\times n}$ sind äquivalent:
+\[
+  \det(A)\ne0\iff\rang(A)=n\iff A^{-1}\text{ existiert}
+  \iff\kernel(A)=\{0\}.
+\]
+Zeilenumformungen: Zeilentausch ändert das Vorzeichen von $\det(A)$;
+Multiplikation einer Zeile mit $c$ multipliziert $\det(A)$ mit $c$;
+Addition eines Vielfachen einer anderen Zeile ändert sie nicht.
+Bei Dreiecksmatrizen ist $\det(A)$ das Produkt der Diagonaleinträge.
+Der Rang ist die Anzahl der Pivots nach dem Gauß-Verfahren.
+
+\section*{Lineare Gleichungssysteme}
+Ein System $Ax=b$ wird mit der erweiterten Matrix $[A\mid b]$
+durch elementare Zeilenumformungen gelöst:
+\begin{enumerate}
+  \item Pivotspalte wählen und gegebenenfalls Zeilen tauschen.
+  \item Einträge unter dem Pivot eliminieren.
+  \item Rückwärtseinsetzen oder bis zur reduzierten Zeilenstufenform fortfahren.
+\end{enumerate}
+Lösbarkeit und Eindeutigkeit:
+\[
+  Ax=b\text{ lösbar}\iff\rang(A)=\rang([A\mid b]).
+\]
+Bei Lösbarkeit ist die Lösung genau dann eindeutig, wenn
+$\rang(A)=n$ (Anzahl der Unbekannten). Andernfalls gibt es freie
+Variablen und unendlich viele Lösungen über $\R$.
+Für $Ax=0$ gilt stets $x=0$ als Lösung.
+
+\section*{Vektorräume und Basen}
+Die lineare Hülle von $v_1,\ldots,v_k$ ist
+\[
+  \spann(v_1,\ldots,v_k)
+  =\left\{\sum_{i=1}^{k}\lambda_i v_i:\lambda_i\in\K\right\}.
+\]
+Die Vektoren sind linear unabhängig genau dann, wenn
+$\sum_i\lambda_i v_i=0$ nur für alle $\lambda_i=0$ gilt.
+Eine Basis ist ein linear unabhängiges Erzeugendensystem;
+die Anzahl ihrer Vektoren ist die Dimension.
+Für $A\in\K^{m\times n}$:
+\[
+  \dim\kernel(A)+\rang(A)=n,
+  \qquad \rang(A)=\dim\bild(A).
+\]
+Die Pivotspalten der \emph{ursprünglichen} Matrix $A$ bilden eine
+Basis von $\bild(A)$; die freien Variablen liefern eine Basis von
+$\kernel(A)$.
+
+\section*{Lineare Abbildungen}
+Eine Abbildung $T:V\to W$ ist linear, wenn
+\[
+  T(u+v)=T(u)+T(v),\qquad T(\lambda u)=\lambda T(u).
+\]
+Für $T(x)=Ax$ gilt $\kernel(T)=\{x:Ax=0\}$ und
+$\bild(T)=\{Ax:x\in\K^n\}$.
+Die Spalten von $A$ sind die Bilder der Standardbasisvektoren.
+
+\section*{Eigenwerte und Eigenvektoren}
+Für $A\in\K^{n\times n}$ heißt $\lambda$ Eigenwert, falls ein
+$v\ne0$ mit $Av=\lambda v$ existiert. Berechnung:
+\[
+  p_A(\lambda)=\det(A-\lambda I)=0,
+  \qquad E_\lambda=\kernel(A-\lambda I).
+\]
+Die Nullstelle $\lambda$ hat algebraische Vielfachheit gemäß
+$p_A$; ihre geometrische Vielfachheit ist $\dim E_\lambda$.
+$A$ ist diagonalisierbar genau dann, wenn es $n$ linear unabhängige
+Eigenvektoren gibt. Dann gilt mit diesen als Spalten von $P$:
+\[
+  A=PDP^{-1},\qquad
+  D=\operatorname{diag}(\lambda_1,\ldots,\lambda_n),\qquad
+  A^k=PD^kP^{-1}.
+\]
+Außerdem: $\spur(A)=\sum_i\lambda_i$ und
+$\det(A)=\prod_i\lambda_i$ (mit Vielfachheiten, über $\mathbb C$).
+
+\section*{Orthogonalität und kleinste Quadrate}
+Eine reelle Matrix $Q$ ist orthogonal, falls
+$Q^TQ=I$; dann $Q^{-1}=Q^T$ und $\|Qx\|_2=\|x\|_2$.
+Für $A\in\R^{m\times n}$ mit linear unabhängigen Spalten löst
+\[
+  A^TA\hat x=A^Tb
+\]
+das Ausgleichsproblem
+$\min_x\|Ax-b\|_2^2$; der Rest $b-A\hat x$ ist orthogonal
+zu jeder Spalte von $A$.
+
+\end{multicols}
+
+\end{document}

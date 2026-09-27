@@ -35,6 +35,26 @@ out/
 hs_err_pid*
 replay_pid*
 
+# LaTeX: kompilierte Dokumente und Zwischendateien
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.nav
+*.out
+*.pdf
+*.run.xml
+*.snm
+*.synctex*
+*.toc
+*.vrb
+
 # Eclipse-Workspace und lokale IDE-Einstellungen
 .metadata/
 .recommenders/
