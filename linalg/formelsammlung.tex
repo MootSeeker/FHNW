@@ -1,17 +1,17 @@
-\documentclass[11pt,a4paper]{article}
-
+\documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
-\usepackage[a4paper,margin=20mm]{geometry}
+\usepackage[a4paper,margin=10mm]{geometry}
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage[expansion=false]{microtype}
-\usepackage{multicol}
 \usepackage{enumitem}
-
+\pagestyle{empty}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{4pt}
-\setlist{nosep}
+\setlength{\parskip}{1pt}
+\setlength{\fboxsep}{1.5mm}
+\setlength{\fboxrule}{0.4pt}
+\setlist{nosep,leftmargin=*}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\K}{\mathbb{K}}
 \newcommand{\rang}{\operatorname{rang}}
@@ -19,168 +19,327 @@
 \newcommand{\kernel}{\operatorname{Ker}}
 \newcommand{\bild}{\operatorname{Bild}}
 \newcommand{\spann}{\operatorname{span}}
-
+\newlength{\kastenbreite}
+\setlength{\kastenbreite}{\dimexpr(\textwidth-4mm)/3-2\fboxsep-2\fboxrule\relax}
+% Zwölf unteilbare Kästchen pro Seite: drei Spalten, vier Zeilen.
+\newcommand{\thema}[2]{%
+  \fbox{\begin{minipage}[t][61.5mm][t]{\kastenbreite}
+    \fontsize{7.5}{8.5}\selectfont
+    \setlength{\abovedisplayskip}{2pt}
+    \setlength{\belowdisplayskip}{2pt}
+    \setlength{\abovedisplayshortskip}{1pt}
+    \setlength{\belowdisplayshortskip}{1pt}
+    {\fontsize{8.5}{9.5}\selectfont\bfseries #1}\par
+    \vspace{0.6mm}\hrule\vspace{0.6mm}
+    #2
+  \end{minipage}}%
+}
+\newcommand{\kopf}[1]{%
+  {\large\bfseries Formelsammlung LAGL}\hfill{\small Seite #1}\par
+  \vspace{2mm}
+}
+\newcommand{\zeilenabstand}{\par\vspace{1.5mm}}
 \begin{document}
+\kopf{1}
+\thema{1. Vektoren und Skalarprodukt}{
+Für $u,v\in\R^n$:
+\[
+ \begin{gathered}
+ u\cdot v=\sum_{i=1}^n u_iv_i,\\
+ \|v\|_2=\sqrt{v\cdot v}.
+ \end{gathered}
+\]
+\[
+ u\perp v\iff u\cdot v=0.
+\]
+Winkel für $u,v\ne0$:
+\[
+ \cos\varphi=\frac{u\cdot v}{\|u\|_2\|v\|_2}.
+\]
+Projektion auf den Vektor $v\ne0$:
+\[
+ \operatorname{proj}_v(u)=\frac{u\cdot v}{v\cdot v}\,v.
+\]
+\textbf{Kreuzprodukt in $\R^3$:} $u\times v$ steht senkrecht auf
+$u$ und $v$. Seine Länge ist der Flächeninhalt des von $u,v$
+aufgespannten Parallelogramms.
+}\hfill
+\thema{2. Projektion und Spiegelung}{
+Gerade $g=A+tv$ in $\R^2$, $v=(v_1,v_2)^T\ne0$:
+\[
+ n=\begin{pmatrix}v_2\\-v_1\end{pmatrix},\qquad n\cdot v=0.
+\]
+Senkrechter Anteil von $P-A$:
+\[
+ h=\frac{(P-A)\cdot n}{n\cdot n}\,n.
+\]
+$h$: vom Lotfußpunkt zu $P$; durch den Ursprung: $A=0$.
+\[
+ \boxed{P'=P-h}\quad\text{Projektion},
+\]
+\[
+ \boxed{P''=P-2h}\quad\text{Spiegelung}.
+\]
+\textbf{Rechnen:} $r=P-A$, zuerst den Faktor
+\[
+ c=\frac{r_1n_1+r_2n_2}{n_1^2+n_2^2},\quad
+ h=\begin{pmatrix}cn_1\\cn_2\end{pmatrix}.
+\]
+Zähler, Nenner und negative Zahlen einklammern;
+komponentenweise subtrahieren.
 
-\begin{center}
-  {\LARGE\bfseries Formelsammlung Lineare Algebra}\\[2mm]
-  {\small Grundlagen \textbullet\ Matrizen \textbullet\ lineare Gleichungssysteme
-  \textbullet\ Vektorräume \textbullet\ Eigenwerte}
-\end{center}
+\textbf{Kontrolle:} $P'-A$ ist ein Vielfaches von $v$;
+$h\cdot v=0$; $P'=(P+P'')/2$.
+}\hfill
+\thema{3. Matrizen und Inverse}{
+$A\in\K^{m\times n}$, $B\in\K^{n\times p}$:
+\[
+ (AB)_{ij}=\sum_{k=1}^n a_{ik}b_{kj}.
+\]
+\[
+ \begin{gathered}
+ (AB)^T=B^TA^T,\\ AI_n=I_mA=A.
+ \end{gathered}
+\]
+Im Allgemeinen gilt $AB\ne BA$.
 
-\begin{multicols}{2}
-
-\section*{Vektoren und Skalarprodukt}
-Für $u,v,w\in\R^n$ und $\lambda\in\R$ gilt
+Für invertierbare quadratische Matrizen:
 \[
-  u\cdot v=\sum_{i=1}^{n}u_iv_i,\qquad
-  \|v\|_2=\sqrt{v\cdot v}=\sqrt{\sum_{i=1}^{n}v_i^2}.
+ \begin{gathered}
+ AA^{-1}=A^{-1}A=I,\\
+ (AB)^{-1}=B^{-1}A^{-1}.
+ \end{gathered}
 \]
-\[
-  u\perp v\iff u\cdot v=0,\qquad
-  \cos\varphi=\frac{u\cdot v}{\|u\|_2\|v\|_2}
-  \quad(u,v\ne0).
-\]
-Projektion auf $v\ne0$:
-\[
-  \operatorname{proj}_v(u)=\frac{u\cdot v}{v\cdot v}\,v.
-\]
-Für $u,v\in\R^3$ ist $u\times v$ orthogonal zu beiden;
-$\|u\times v\|$ ist der Flächeninhalt des aufgespannten
-Parallelogramms.
-
-\section*{Matrizen}
-Für $A\in\K^{m\times n}$ und $B\in\K^{n\times p}$:
-\[
-  (AB)_{ij}=\sum_{k=1}^{n}a_{ik}b_{kj},\qquad
-  (AB)^T=B^TA^T.
-\]
-Im Allgemeinen gilt $AB\ne BA$. Die Einheitsmatrix $I_n$ erfüllt
-$AI_n=I_mA=A$. Für invertierbare quadratische Matrizen:
-\[
-  AA^{-1}=A^{-1}A=I,\qquad
-  (AB)^{-1}=B^{-1}A^{-1}.
-\]
-Für $A=\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}$ gilt bei
+Für $A=\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}$,
 $ad-bc\ne0$:
 \[
-  A^{-1}=\frac{1}{ad-bc}
-  \begin{pmatrix}d&-b\\-c&a\end{pmatrix}.
+ A^{-1}=\frac{1}{ad-bc}
+ \begin{pmatrix}d&-b\\-c&a\end{pmatrix}.
 \]
-
-\section*{Determinante und Rang}
+}
+\zeilenabstand
+\thema{4. Determinante und Rang}{
 \[
-  \det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc,
-  \qquad \det(AB)=\det(A)\det(B).
+ \det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc.
 \]
-Für quadratisches $A\in\K^{n\times n}$ sind äquivalent:
 \[
-  \det(A)\ne0\iff\rang(A)=n\iff A^{-1}\text{ existiert}
-  \iff\kernel(A)=\{0\}.
+ \det(AB)=\det(A)\det(B).
 \]
-Zeilenumformungen: Zeilentausch ändert das Vorzeichen von $\det(A)$;
-Multiplikation einer Zeile mit $c$ multipliziert $\det(A)$ mit $c$;
-Addition eines Vielfachen einer anderen Zeile ändert sie nicht.
-Bei Dreiecksmatrizen ist $\det(A)$ das Produkt der Diagonaleinträge.
-Der Rang ist die Anzahl der Pivots nach dem Gauß-Verfahren.
+Für $A\in\K^{n\times n}$ sind äquivalent:
+\[
+ \begin{gathered}
+ \det(A)\ne0\iff\rang(A)=n\\
+ \iff A^{-1}\text{ existiert}\\
+ \iff\kernel(A)=\{0\}.
+ \end{gathered}
+\]
+\textbf{Zeilenumformungen und Determinante:}
+\begin{itemize}
+ \item Zeilentausch: Vorzeichenwechsel.
+ \item Zeile mit $c$ multiplizieren: Determinante mal $c$.
+ \item Vielfaches einer anderen Zeile addieren: unverändert.
+\end{itemize}
+Bei Dreiecksmatrizen: Produkt der Diagonaleinträge.
 
-\section*{Lineare Gleichungssysteme}
-Ein System $Ax=b$ wird mit der erweiterten Matrix $[A\mid b]$
-durch elementare Zeilenumformungen gelöst:
+\textbf{Rang:} Anzahl der Pivots nach dem Gauß-Verfahren.
+}\hfill
+\thema{5. Lineare Gleichungssysteme}{
+$Ax=b$ mit $n$ Unbekannten: erweiterte Matrix $[A\mid b]$.
+
+\textbf{Gauß-Verfahren:}
 \begin{enumerate}
-  \item Pivotspalte wählen und gegebenenfalls Zeilen tauschen.
-  \item Einträge unter dem Pivot eliminieren.
-  \item Rückwärtseinsetzen oder bis zur reduzierten Zeilenstufenform fortfahren.
+ \item Pivotspalte wählen, ggf.\ Zeilen tauschen.
+ \item Einträge unter dem Pivot eliminieren.
+ \item Rückwärtseinsetzen oder zur reduzierten
+ Zeilenstufenform weiterrechnen.
 \end{enumerate}
-Lösbarkeit und Eindeutigkeit:
 \[
-  Ax=b\text{ lösbar}\iff\rang(A)=\rang([A\mid b]).
+ \begin{gathered}
+ Ax=b\text{ lösbar}\\
+ \iff\rang(A)=\rang([A\mid b]).
+ \end{gathered}
 \]
-Bei Lösbarkeit ist die Lösung genau dann eindeutig, wenn
-$\rang(A)=n$ (Anzahl der Unbekannten). Andernfalls gibt es freie
-Variablen und unendlich viele Lösungen über $\R$.
-Für $Ax=0$ gilt stets $x=0$ als Lösung.
+Bei Lösbarkeit:
+\begin{itemize}
+ \item $\rang(A)=n$: genau eine Lösung.
+ \item $\rang(A)<n$: freie Variablen; über $\R$ unendlich
+ viele Lösungen.
+\end{itemize}
+$Ax=0$ hat immer die Lösung $x=0$.
 
-\section*{Vektorräume und Basen}
-Die lineare Hülle von $v_1,\ldots,v_k$ ist
+\textbf{Allgemeine Lösung:}
+$x=x_p+x_h$, wobei $Ax_p=b$ und $x_h\in\kernel(A)$.
+}\hfill
+\thema{6. Vektorräume und Basen}{
 \[
-  \spann(v_1,\ldots,v_k)
-  =\left\{\sum_{i=1}^{k}\lambda_i v_i:\lambda_i\in\K\right\}.
+ \begin{gathered}
+ \spann(v_1,\ldots,v_k)\\
+ =\left\{\sum_{i=1}^k\lambda_i v_i:\lambda_i\in\K\right\}.
+ \end{gathered}
 \]
-Die Vektoren sind linear unabhängig genau dann, wenn
-$\sum_i\lambda_i v_i=0$ nur für alle $\lambda_i=0$ gilt.
-Eine Basis ist ein linear unabhängiges Erzeugendensystem;
-die Anzahl ihrer Vektoren ist die Dimension.
+\textbf{Linear unabhängig:}
+$\sum_i\lambda_i v_i=0$ gilt nur, wenn alle $\lambda_i=0$.
+
+\textbf{Basis:} linear unabhängiges Erzeugendensystem.
+Die Anzahl der Basisvektoren ist die Dimension.
+
 Für $A\in\K^{m\times n}$:
 \[
-  \dim\kernel(A)+\rang(A)=n,
-  \qquad \rang(A)=\dim\bild(A).
+ \dim\kernel(A)+\rang(A)=n,
 \]
-Die Pivotspalten der \emph{ursprünglichen} Matrix $A$ bilden eine
-Basis von $\bild(A)$; die freien Variablen liefern eine Basis von
-$\kernel(A)$.
+\[
+ \rang(A)=\dim\bild(A).
+\]
+\textbf{Bildbasis:} Pivotspalten der \emph{ursprünglichen}
+Matrix $A$ verwenden.
 
-\section*{Lineare Abbildungen}
-Eine Abbildung $T:V\to W$ ist linear, wenn
+\textbf{Kernbasis:} $Ax=0$ lösen; für jede freie Variable
+je einen Basisvektor bestimmen.
+}
+\zeilenabstand
+\thema{7. Lineare Abbildungen}{
+$T:V\to W$ ist linear, wenn
 \[
-  T(u+v)=T(u)+T(v),\qquad T(\lambda u)=\lambda T(u).
+ \begin{gathered}
+ T(u+v)=T(u)+T(v),\\
+ T(\lambda u)=\lambda T(u).
+ \end{gathered}
 \]
-Für $T(x)=Ax$ gilt $\kernel(T)=\{x:Ax=0\}$ und
-$\bild(T)=\{Ax:x\in\K^n\}$.
-Die Spalten von $A$ sind die Bilder der Standardbasisvektoren.
+Für $T(x)=Ax$, $A\in\K^{m\times n}$:
+\[
+ \kernel(T)=\{x\in\K^n:Ax=0\},
+\]
+\[
+ \bild(T)=\{Ax:x\in\K^n\}.
+\]
+Die Spalten von $A$ sind die Bilder der
+Standardbasisvektoren: $A=(T(e_1),\ldots,T(e_n))$.
 
-\section*{Geraden: Parameterform und Geradengleichung}
-Eine Gerade durch $P=(p_1,p_2)$ mit Richtungsvektor
-$v=(v_1,v_2)\ne0$ hat die Parameterform
-\[
-  g:\quad \begin{pmatrix}x\\y\end{pmatrix}
-  =\begin{pmatrix}p_1\\p_2\end{pmatrix}
-  +t\begin{pmatrix}v_1\\v_2\end{pmatrix},
-  \qquad t\in\R.
-\]
-Für $v_1\ne0$ ergibt das nach dem Eliminieren von $t$ die
-Geradengleichung
-\[
-  y-p_2=\frac{v_2}{v_1}(x-p_1),
-  \qquad\text{also}\qquad y=mx+b,
-\]
-mit $m=v_2/v_1$ und $b=p_2-mp_1$. Allgemein gilt die
-Normalenform
-\[
-  v_2(x-p_1)-v_1(y-p_2)=0.
-\]
-Für $v_1=0$ ist die Gerade vertikal und lautet $x=p_1$.
+\textbf{Injektiv:} $\kernel(T)=\{0\}$.
 
-\section*{Eigenwerte und Eigenvektoren}
-Für $A\in\K^{n\times n}$ heißt $\lambda$ Eigenwert, falls ein
-$v\ne0$ mit $Av=\lambda v$ existiert. Berechnung:
+\textbf{Surjektiv:} $\bild(T)=W$.
+}\hfill
+\thema{8. Geraden in der Ebene}{
+Durch $P=(p_1,p_2)^T$ mit $v=(v_1,v_2)^T\ne0$:
 \[
-  p_A(\lambda)=\det(A-\lambda I)=0,
-  \qquad E_\lambda=\kernel(A-\lambda I).
+ g:\quad\begin{pmatrix}x\\y\end{pmatrix}
+ =\begin{pmatrix}p_1\\p_2\end{pmatrix}
+ +t\begin{pmatrix}v_1\\v_2\end{pmatrix}.
 \]
-Die Nullstelle $\lambda$ hat algebraische Vielfachheit gemäß
-$p_A$; ihre geometrische Vielfachheit ist $\dim E_\lambda$.
-$A$ ist diagonalisierbar genau dann, wenn es $n$ linear unabhängige
-Eigenvektoren gibt. Dann gilt mit diesen als Spalten von $P$:
+$t\in\R$.
+Für $v_1\ne0$: Parameter $t$ eliminieren.
 \[
-  A=PDP^{-1},\qquad
-  D=\operatorname{diag}(\lambda_1,\ldots,\lambda_n),\qquad
-  A^k=PD^kP^{-1}.
+ y-p_2=\frac{v_2}{v_1}(x-p_1).
 \]
-Außerdem: $\spur(A)=\sum_i\lambda_i$ und
-$\det(A)=\prod_i\lambda_i$ (mit Vielfachheiten, über $\mathbb C$).
-
-\section*{Orthogonalität und kleinste Quadrate}
-Eine reelle Matrix $Q$ ist orthogonal, falls
-$Q^TQ=I$; dann $Q^{-1}=Q^T$ und $\|Qx\|_2=\|x\|_2$.
-Für $A\in\R^{m\times n}$ mit linear unabhängigen Spalten löst
 \[
-  A^TA\hat x=A^Tb
+ \begin{gathered}
+ y=mx+b,\qquad m=\frac{v_2}{v_1},\\
+ b=p_2-mp_1.
+ \end{gathered}
 \]
-das Ausgleichsproblem
-$\min_x\|Ax-b\|_2^2$; der Rest $b-A\hat x$ ist orthogonal
-zu jeder Spalte von $A$.
+\textbf{Normalenform} (auch für vertikale Geraden):
+\[
+ v_2(x-p_1)-v_1(y-p_2)=0.
+\]
+Für $v_1=0$ ist die Gerade vertikal: $x=p_1$.
+}\hfill
+\thema{9. Eigenwerte und Eigenvektoren}{
+$A\in\K^{n\times n}$: $\lambda$ ist Eigenwert, wenn für
+$v\ne0$ gilt $Av=\lambda v$.
 
-\end{multicols}
+\textbf{Berechnung:}
+\begin{enumerate}
+ \item $p_A(\lambda)=\det(A-\lambda I)$ berechnen.
+ \item $p_A(\lambda)=0$ lösen: Eigenwerte.
+ \item Für jeden Eigenwert $(A-\lambda I)v=0$ lösen.
+\end{enumerate}
+\[
+ E_\lambda=\kernel(A-\lambda I).
+\]
+\textbf{Algebraische Vielfachheit:} Vielfachheit der
+Nullstelle $\lambda$ in $p_A$.
 
+\textbf{Geometrische Vielfachheit:} $\dim E_\lambda$.
+
+Über $\mathbb C$, Eigenwerte mit Vielfachheiten zählen:
+\[
+ \begin{gathered}
+ \spur(A)=\sum_i\lambda_i,\\
+ \det(A)=\prod_i\lambda_i.
+ \end{gathered}
+\]
+}
+\zeilenabstand
+\thema{10. Diagonalisierung}{
+$A\in\K^{n\times n}$ ist genau dann über $\K$
+diagonalisierbar, wenn es $n$ linear unabhängige
+Eigenvektoren über $\K$ gibt.
+
+\textbf{Vorgehen:}
+\begin{enumerate}
+ \item Eigenwerte und Eigenraumbasen bestimmen.
+ \item $n$ unabhängige Eigenvektoren als Spalten von $P$
+ anordnen.
+ \item Zugehörige Eigenwerte in derselben Reihenfolge
+ auf die Diagonale von $D$ schreiben.
+\end{enumerate}
+\[
+ A=PDP^{-1},\qquad D=P^{-1}AP,
+\]
+\[
+ D=\operatorname{diag}(\lambda_1,\ldots,\lambda_n).
+\]
+Potenzen für $k\ge0$:
+\[
+ \begin{gathered}
+ A^k=PD^kP^{-1},\\
+ D^k=\operatorname{diag}(\lambda_1^k,\ldots,\lambda_n^k).
+ \end{gathered}
+\]
+}\hfill
+\thema{11. Orthogonale Matrizen}{
+Eine reelle quadratische Matrix $Q$ ist orthogonal, wenn
+\[
+ Q^TQ=I.
+\]
+Dann gilt:
+\[
+ Q^{-1}=Q^T,\qquad QQ^T=I,
+\]
+\[
+ \|Qx\|_2=\|x\|_2.
+\]
+Die Spalten (und Zeilen) bilden eine Orthonormalbasis:
+\[
+ q_i\cdot q_j=
+ \begin{cases}1,&i=j,\\0,&i\ne j.\end{cases}
+\]
+\textbf{Orthonormal:} paarweise senkrecht und jeweils Länge $1$.
+
+Orthogonale Abbildungen erhalten Längen und Winkel.
+}\hfill
+\thema{12. Kleinste Quadrate}{
+Für $A\in\R^{m\times n}$ mit linear unabhängigen Spalten:
+\[
+ \min_x\|Ax-b\|_2^2.
+\]
+\textbf{Normalengleichungen:}
+\[
+ \boxed{A^TA\hat x=A^Tb}.
+\]
+$A^TA$ ist invertierbar; damit
+\[
+ \hat x=(A^TA)^{-1}A^Tb.
+\]
+\textbf{Vorgehen:} $A^TA$ und $A^Tb$ berechnen,
+anschließend das Gleichungssystem für $\hat x$ lösen.
+
+\textbf{Restvektor:} $r=b-A\hat x$. Er steht senkrecht
+auf jeder Spalte von $A$:
+\[
+ A^Tr=0.
+\]
+$A\hat x$ ist die orthogonale Projektion von $b$
+auf $\bild(A)$.
+}
 \end{document}
