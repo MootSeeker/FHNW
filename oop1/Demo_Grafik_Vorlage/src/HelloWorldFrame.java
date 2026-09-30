@@ -32,7 +32,6 @@ class HelloWorldPanel extends JPanel {
 		g.drawString(welcomeText, (getWidth() - g.getFontMetrics().stringWidth(welcomeText)) / 2, positionSubtitle);
 		
 	}
-
 }
 
 public class HelloWorldFrame extends JFrame {
