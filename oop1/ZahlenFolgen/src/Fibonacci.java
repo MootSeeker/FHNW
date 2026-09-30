@@ -13,7 +13,7 @@ public class Fibonacci {
 		// Calculation with Fibonacci algorithm: 
 		int result =  0; 
 		int a = 0, b= 1; 
-		while( 144 > result ) {
+		while( 255 > result ) {
 			result = a + b;
 			a = b; 
 			b = result; 
