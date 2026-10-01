@@ -1,206 +1,659 @@
-\documentclass[9pt,a4paper]{extarticle}
-
-% ============================================================
-% Formelsammlung – Allgemeine Elektrotechnik 1 (AET1)
-% Layout: Kachel-Raster (tcolorbox), max. 2 A4-Seiten (Querformat)
-%
-% Hinweis: Das Raster wird HIER manuell mit fixer Breite pro Kachel
-% gebaut (statt \tcbraster), weil die automatische tcolorbox-Raster-
-% Umgebung im Test nicht zuverlässig mehrspaltig umgebrochen hat.
-% ============================================================
-
-\usepackage[a4paper,margin=5mm,landscape]{geometry}
+\documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
+\usepackage[a4paper,margin=5mm]{geometry}
 \usepackage{amsmath,amssymb}
-\usepackage{siunitx}
-\usepackage[skins]{tcolorbox}
-\usepackage{enumitem}
-\usepackage{xcolor}
-
-\setlength{\parindent}{0pt}
-\setlist{nosep, leftmargin=0.9em, itemsep=0pt, topsep=1pt}
 \pagestyle{empty}
-
-% Kurzbefehl für zentrierte Formel-Zeilen
-\newcommand{\formel}[1]{\[#1\]}
-
-% ---- Themenfarben --------------------------------------------------
-\definecolor{cGrund}{HTML}{2C5AA0}   % Grundlagen / Gleichstrom
-\definecolor{cNetz}{HTML}{1F8A70}    % Netzwerke / Quellen
-\definecolor{cBauteil}{HTML}{B5651D} % Bauelemente C/L
-\definecolor{cFeld}{HTML}{7B4EA3}    % Felder
-\definecolor{cWechsel}{HTML}{C0392B} % Wechselstrom
-\definecolor{cRef}{HTML}{555555}     % Konstanten / Einheiten
-
-% ---- Manuelles 4-Spalten-Raster ------------------------------------
-% Breite: (Textbreite 287mm - 3x Spaltenabstand 2mm) / 4 Spalten
-\newlength{\tilew}
-\setlength{\tilew}{69.25mm}
-\newcommand{\tilegap}{\hspace{2mm}}
-
-\tcbset{
-  tilestyle/.style={
-    nobeforeafter, valign=top, halign=left,
-    width=\tilew, height=90mm,
-    boxrule=0.4pt, arc=0pt,
-    left=2pt, right=2pt, top=1.5pt, bottom=1.5pt, boxsep=0pt,
-    fonttitle=\bfseries\scriptsize, coltitle=white,
-    title
-  }
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\setlength{\fboxsep}{1.5mm}
+\setlength{\fboxrule}{0.4pt}
+% Auch Indizes und Exponenten sind mindestens 6 pt gross.
+\DeclareMathSizes{7}{7}{6}{6}
+% Die untergeordnete Legende darf laut Nutzer kleiner sein.
+\DeclareMathSizes{5.5}{5.5}{5}{5}
+\newlength{\kastenbreite}
+\setlength{\kastenbreite}{\dimexpr(\textwidth-6mm)/3-2\fboxsep-2\fboxrule\relax}
+% Zwölf Kacheln pro Seite: drei Spalten, vier Zeilen.
+\newcommand{\thema}[2]{%
+  \fbox{\begin{minipage}[t][62mm][t]{\kastenbreite}
+    \fontsize{7}{8}\selectfont
+    \setlength{\abovedisplayskip}{2pt}
+    \setlength{\belowdisplayskip}{2pt}
+    \setlength{\abovedisplayshortskip}{2pt}
+    \setlength{\belowdisplayshortskip}{2pt}
+    {\fontsize{8}{9}\selectfont\bfseries\strut #1}\par
+    \vspace{0.6mm}\hrule\vspace{0.6mm}
+    #2
+  \end{minipage}}%
 }
-% #1 Farbe  #2 Titel  #3 Inhalt
-\newcommand{\tile}[3]{%
-  \begin{tcolorbox}[tilestyle, colframe=#1, colback=#1!4, colbacktitle=#1, title={#2}]
-    #3
-  \end{tcolorbox}%
+\newcommand{\kopf}[1]{%
+  {\large\bfseries Formelsammlung AET1}\hfill{\small #1 / 2}\par
+  \vspace{2mm}
 }
-
+\newcommand{\zeilenabstand}{\par\vspace{3mm}\noindent}
+% Legenden stehen am unteren Rand der festen Kachelhöhe.
+\newcommand{\einheiten}[1]{\par\vfill{\fontsize{5.5}{6.3}\selectfont #1\par}}
+% Kompakte Formelabstände für die ergänzten Kacheln.
+\newcommand{\kompakt}{%
+  \setlength{\abovedisplayskip}{1pt}%
+  \setlength{\belowdisplayskip}{1pt}%
+  \setlength{\abovedisplayshortskip}{1pt}%
+  \setlength{\belowdisplayshortskip}{1pt}%
+}
 \begin{document}
-\scriptsize
-
-{\centering\bfseries\normalsize Formelsammlung AET1 -- Allgemeine Elektrotechnik 1\par}
+\kopf{1}
+\noindent
+\thema{1. Widerstand, Strom und Leistung}{%
+\setlength{\abovedisplayskip}{1pt}
+\setlength{\belowdisplayskip}{1pt}
+\setlength{\abovedisplayshortskip}{1pt}
+\setlength{\belowdisplayshortskip}{1pt}
+\textbf{Ohmsches Gesetz und Leitwert:}
+\[
+ U=R\cdot I,\qquad I=U\cdot G,\qquad G=\frac{1}{R}
+\]
+\textbf{Strom und Ladung:}
+\[
+ \begin{gathered}
+ I=\frac{Q}{t},\qquad Q=I\cdot t=n\cdot e\\[1pt]
+ i(t)=\frac{\mathrm{d}q(t)}{\mathrm{d}t},\qquad J=\frac{I}{A}
+ \end{gathered}
+\]
+\textbf{Leistung am Widerstand:}
+\[
+ \begin{gathered}
+ P=U\cdot I=I^2R=\frac{U^2}{R}\\[1pt]
+ P=U^2G=\frac{I^2}{G}
+ \end{gathered}
+\]
+\einheiten{%
+\textbf{Grössen und Einheiten:}
+$U$ Spannung [V], $I,i$ Strom [A], $R$ Widerstand [$\Omega$],
+$G$ Leitwert [S], $P$ Leistung [W].\par
+$Q,q$ Ladung [C], $t$ Zeit [s], $A$ Querschnitt [$\mathrm{m}^2$],
+$J$ Stromdichte [$\mathrm{A}/\mathrm{m}^2$], $n$ Anzahl Elementarladungen.\par
+$e\approx1{,}602\cdot10^{-19}\,\mathrm{C}$,
+$1\,\mathrm{C}=1\,\mathrm{A}\cdot\mathrm{s}$.
+}
+}\hfill
+\thema{2. Widerstand und Temperatur}{%
+\setlength{\abovedisplayskip}{1pt}
+\setlength{\belowdisplayskip}{1pt}
+\setlength{\abovedisplayshortskip}{1pt}
+\setlength{\belowdisplayshortskip}{1pt}
+\textbf{Leiterwiderstand:}
+\[
+ R=\frac{\rho\cdot l}{A}=\frac{l}{\sigma\cdot A},\qquad
+ \sigma=\frac{1}{\rho}
+\]
+\textbf{Differentieller Widerstand:}
+\[
+ R=\frac{u}{i},\qquad
+ r=\frac{\mathrm{d}u}{\mathrm{d}i}\approx\frac{\Delta u}{\Delta i}
+\]
+\textbf{Temperaturabhängigkeit:}
+\[
+ \begin{gathered}
+ \Delta T=T_{\mathrm{w}}-20\,{}^{\circ}\mathrm{C}\\[1pt]
+ R_{\mathrm{w}}=R_{20}\bigl(1+\alpha_{20}\Delta T\bigr)\\[1pt]
+ R_{\mathrm{w}}=R_{20}\bigl(1+\alpha_{20}\Delta T+
+ \beta_{20}\Delta T^2\bigr)
+ \end{gathered}
+\]
+\einheiten{%
+\textbf{Grössen und Einheiten:}
+$R,r$ Widerstand [$\Omega$], $u$ Spannung [V], $i$ Strom [A],
+$l$ Leiterlänge [m], $A$ Querschnitt [$\mathrm{m}^2$].\par
+$\rho$ spezifischer Widerstand [$\Omega\,\mathrm{m}$],
+$\sigma$ Leitfähigkeit [$\mathrm{S}/\mathrm{m}$].\par
+$R_{20}$ bei $20\,{}^{\circ}\mathrm{C}$,
+$R_{\mathrm{w}}$ bei $T_{\mathrm{w}}$;
+$T_{\mathrm{w}}$ Temperatur [$^{\circ}\mathrm{C}$],
+$\Delta T$ Temperaturdifferenz [K].\par
+$\alpha_{20}$ linearer Koeffizient [$\mathrm{K}^{-1}$],
+$\beta_{20}$ quadratischer Koeffizient [$\mathrm{K}^{-2}$].\par
+Linear: näherungsweise bis $200\,{}^{\circ}\mathrm{C}$;
+quadratisch: für höhere Temperaturen.
+Fallende Kennlinie: $r<0$; Heissleiter: $\alpha<0$.
+}
+}
+\hfill\thema{3. Spannungs- und Stromrichtung}{%
+\setlength{\abovedisplayskip}{1pt}
+\setlength{\belowdisplayskip}{1pt}
+\setlength{\abovedisplayshortskip}{1pt}
+\setlength{\belowdisplayshortskip}{1pt}
+\textbf{Bezugsspannung (Pfeil $1\to2$):}
+\[
+ \begin{gathered}
+ U_{12}=V_1-V_2\\[1pt]
+ U_{21}=V_2-V_1=-U_{12}
+ \end{gathered}
+\]
+\textbf{Strom: Vorzeichen bei Pfeilumkehr}
+\[
+ I_{\to}=1{,}5\,\mathrm{A},\qquad I_{\leftarrow}=-1{,}5\,\mathrm{A}
+\]
+\textbf{Zählpfeilsysteme:}
+\par\vspace{1mm}
+{\centering
+\setlength{\unitlength}{1pt}
+\begin{picture}(76,40)
+ \put(42,4){\framebox(20,26){}}
+ \put(10,26){\line(1,0){32}}
+ \put(10,8){\line(1,0){32}}
+ \put(10,26){\circle{3}}
+ \put(10,8){\circle{3}}
+ \put(19,26){\vector(1,0){15}}
+ \put(24,31){$I$}
+ \put(4,23){\vector(0,-1){12}}
+ \put(-3,16){$U$}
+ \put(10,30){$+$}
+ \put(10,0){$-$}
+ \put(42,34){\textbf{VZS}}
+\end{picture}\hfill
+\begin{picture}(76,40)
+ \put(42,4){\framebox(20,26){}}
+ \put(10,26){\line(1,0){32}}
+ \put(10,8){\line(1,0){32}}
+ \put(10,26){\circle{3}}
+ \put(10,8){\circle{3}}
+ \put(34,26){\vector(-1,0){15}}
+ \put(24,31){$I$}
+ \put(4,23){\vector(0,-1){12}}
+ \put(-3,16){$U$}
+ \put(10,30){$+$}
+ \put(10,0){$-$}
+ \put(42,34){\textbf{EZS}}
+\end{picture}\par
 \vspace{1mm}
-
-% ============================================================
-% SEITE 1 -- Gleichstromtechnik / Netzwerke
-% TODO: Themen folgen noch -- Platzhalter mit typischen AET1-Inhalten,
-% koennen ersetzt / ergaenzt / geloescht werden.
-% ============================================================
-\noindent
-\tile{cGrund}{Grundgrößen}{%
-  \begin{itemize}
-    \item Ladung: $Q = I \cdot t$ \ [\si{\coulomb}]
-    \item Strom: $I = \dfrac{Q}{t} = \dfrac{dQ}{dt}$
-    \item Spannung: $U = \dfrac{W}{Q}$
-    \item Leistung: $P = U \cdot I$
-    \item Arbeit: $W = P \cdot t = U I t$
-  \end{itemize}
-}\tilegap
-\tile{cGrund}{Ohmsches Gesetz}{%
-  \formel{U = R I \quad R = \dfrac{U}{I} \quad I = \dfrac{U}{R}}
-  \begin{itemize}
-    \item Leitwert: $G = \dfrac{1}{R}$ \ [\si{\siemens}]
-    \item $R = \rho \dfrac{l}{A} = \dfrac{l}{\kappa A}$
-    \item $R(\vartheta) = R_0 (1+\alpha\Delta\vartheta)$
-  \end{itemize}
-}\tilegap
-\tile{cGrund}{Kirchhoff}{%
-  \textbf{Knotenregel:}
-  \formel{\textstyle\sum I_{\text{ein}} = \sum I_{\text{aus}}}
-  \textbf{Maschenregel:}
-  \formel{\textstyle\sum_k U_k = 0}
-}\tilegap
-\tile{cNetz}{Widerstandsnetzwerke}{%
-  Reihe: $R_{ges} = R_1+R_2+\dots$
-
-  Parallel: $\dfrac{1}{R_{ges}} = \dfrac{1}{R_1}+\dfrac{1}{R_2}+\dots$
-
-  2 Widerst.: $R_{ges}=\dfrac{R_1 R_2}{R_1+R_2}$
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lll@{}}
+ $P=U\cdot I$ & VZS & EZS\\
+ $P>0$ & Aufnahme & Abgabe\\
+ $P<0$ & Abgabe & Aufnahme
+\end{tabular}\par}
+\einheiten{%
+Zählpfeile frei wählbar: $I>0$ mit, $I<0$ gegen den Pfeil.
+Technische Stromrichtung entgegen der Elektronenbewegung.\par
+Am $+$-Bezug: VZS Strom hinein, EZS hinaus;
+Spannungspfeil hier $+\to-$.\par
+\textbf{Einheiten:} $U,V_1,V_2$ Spannung/Potential [V],
+$I$ Strom [A], $P$ Leistung [W].
 }
-
-\vspace{3mm}\par\noindent
-\tile{cNetz}{Spannungs-/Stromteiler}{%
-  Spannungsteiler (unbelastet):
-  \formel{U_2 = U \cdot \dfrac{R_2}{R_1+R_2}}
-  Stromteiler:
-  \formel{I_1 = I \cdot \dfrac{R_2}{R_1+R_2}}
-}\tilegap
-\tile{cNetz}{Leistung \& Energie}{%
-  \begin{itemize}
-    \item $P = UI = I^2R = \dfrac{U^2}{R}$
-    \item Wirkungsgrad: $\eta = \dfrac{P_{ab}}{P_{zu}}$
-    \item Leistungsanpassung: $R_L = R_i$
-  \end{itemize}
-}\tilegap
-\tile{cNetz}{Quellen}{%
-  Reale Spannungsquelle: \ $U = U_0 - R_i I$
-
-  Reale Stromquelle: \ $I = I_0 - \dfrac{U}{R_i}$
-
-  Umwandlung: $U_0 = I_0 R_i$
-}\tilegap
-\tile{cNetz}{Zweipoltheorie}{%
-  \begin{itemize}
-    \item \textbf{Thévenin:} $U_0=U_{Leerlauf}$, $R_i=R_{ab}$ (Quellen passiviert)
-    \item \textbf{Norton:} $I_0=I_{Kurzschluss}$
-  \end{itemize}
 }
-
+\zeilenabstand
+\thema{4. Feld, Spannung und Potential}{\kompakt
+\textbf{Punktladungen und Feld:}
+\[
+ |\vec F|=\frac{|Q_1Q_2|}{4\pi\varepsilon a^2},\qquad \vec F=q\vec E
+\]
+\[
+ \vec E(\vec r)=\frac{Q}{4\pi\varepsilon r^2}\,\vec e_r
+\]
+\textbf{Arbeit und Spannung:}
+\[
+ \begin{gathered}
+ W_{AB}=q\int_A^B\vec E\cdot\mathrm{d}\vec s\\[1pt]
+ U_{AB}=\frac{W_{AB}}{q}=\int_A^B\vec E\cdot\mathrm{d}\vec s\\[1pt]
+ U_{AB}=V_A-V_B,\qquad W_{\mathrm{pot}}=qV
+ \end{gathered}
+\]
+\einheiten{Gleichnamige Ladungen stossen sich ab, ungleichnamige ziehen sich an. Im elektrostatischen Feld ist die Arbeit wegunabhängig.\par
+\textbf{Grössen:} $Q,q$ Ladung [C], $a,r$ Abstand [m], $\vec e_r$ radialer Einheitsvektor, $\varepsilon$ Permittivität [F/m].\par
+$E$ Feldstärke [V/m = N/C], $F$ Kraft [N], $W$ Arbeit/Energie [J], $U,V$ Spannung/Potential [V].}
+}\hfill
+\thema{5. Kirchhoff: Knoten und Maschen}{\kompakt
+\textbf{Knotensatz (1. Kirchhoff):}
+\[
+ \sum I_{\mathrm{zu}}=\sum I_{\mathrm{ab}}
+\]
+\[
+ \sum_{k=1}^{n}s_kI_k=0,\qquad
+ s_k=\begin{cases}+1&\text{zum Knoten}\\-1&\text{vom Knoten}\end{cases}
+\]
+\textbf{Maschensatz (2. Kirchhoff):}
+\[
+ \sum_{k=1}^{n}t_kU_k=0,\qquad
+ t_k=\begin{cases}+1&\text{mit Umlauf}\\-1&\text{gegen Umlauf}\end{cases}
+\]
+\textbf{Im Zeitbereich:}
+\[
+ \sum s_ki_k(t)=0,\qquad \sum t_ku_k(t)=0
+\]
+\einheiten{Zuerst Strompfeile und Maschenumlauf festlegen; Vorzeichen konsequent übernehmen. Der Knotensatz gilt auch für eine Hüllfläche (Superknoten).\par
+\textbf{Grössen:} $I,i$ Strom [A], $U,u$ Spannung [V], $s_k,t_k$ Vorzeichen, $n$ Anzahl beteiligter Zweige.}
+}\hfill
+\thema{6. Arbeit, Bilanz und Wirkungsgrad}{\kompakt
+\textbf{Gleichstrom und konstante Leistung:}
+\[
+ W=Q\cdot U=P\cdot t=U\cdot I\cdot t
+\]
+\textbf{Leistungsbilanz:}
+\[
+ P_{\mathrm{zu}}=P_{\mathrm{ab}}+P_{\mathrm{verl}}
+\]
+\[
+ \eta=\frac{P_{\mathrm{ab}}}{P_{\mathrm{zu}}}\leq1
+\]
+\textbf{Leistung und Energie im Zeitbereich:}
+\[
+ \begin{gathered}
+ p(t)=u(t)i(t)\\[1pt]
+ w(t)=w(t_0)+\int_{t_0}^t p(\tau)\,\mathrm{d}\tau
+ \end{gathered}
+\]
+\einheiten{Ein Widerstand wandelt die aufgenommene elektrische Energie in Wärme um. Bei VZS bedeutet $p>0$ Aufnahme, $p<0$ Abgabe.\par
+\textbf{Einheiten:} $P,p$ [W], $W,w$ [J = Ws], $Q$ [C], $U,u$ [V], $I,i$ [A], $t,\tau$ [s], $\eta$ dimensionslos.\par
+$1\,\mathrm{kWh}=3{,}6\cdot10^6\,\mathrm{J}$.}
+}
+\zeilenabstand
+\thema{7. Serie und Spannungsteiler}{\kompakt
+\textbf{Widerstände in Serie:}
+\[
+ R_E=\sum_{k=1}^n R_k,\qquad U=\sum_{k=1}^n U_k
+\]
+\[
+ I_1=\dots=I_n=I,\qquad U_k=U\frac{R_k}{R_E}
+\]
+\textbf{Zwei Widerstände, unbelastet:}
+\[
+ U_2=U\frac{R_2}{R_1+R_2},\qquad \frac{U_1}{U_2}=\frac{R_1}{R_2}
+\]
+\textbf{Last $R_L$ parallel zu $R_2$:}
+\[
+ \begin{gathered}
+ R'_2=R_2\parallel R_L=\frac{R_2R_L}{R_2+R_L}\\[1pt]
+ U_2=U\frac{R'_2}{R_1+R'_2}
+ \end{gathered}
+\]
+\einheiten{In Serie fliesst derselbe Strom. Die Spannung teilt sich proportional zu den Widerständen. $U$ liegt über der gesamten Serie; $U_2$ über dem unteren Teil.\par
+\textbf{Grössen:} $R_E$ Ersatzwiderstand, $R_L$ Last [$\Omega$], $U,U_k$ Spannung [V], $I$ Strom [A], $\parallel$ Parallelschaltung.}
+}\hfill
+\thema{8. Parallel und Stromteiler}{\kompakt
+\textbf{Widerstände parallel:}
+\[
+ \begin{gathered}
+ G_E=\sum_kG_k,\qquad \frac{1}{R_E}=\sum_k\frac{1}{R_k}\\[1pt]
+ I=\sum_k I_k,\qquad U_1=\dots=U_n=U
+ \end{gathered}
+\]
+\textbf{Stromteilung:}
+\[
+ I_k=I\frac{G_k}{G_E}=I\frac{R_E}{R_k}
+\]
+\textbf{Zwei parallele Widerstände:}
+\[
+ \begin{gathered}
+ R_E=R_1\parallel R_2=\frac{R_1R_2}{R_1+R_2}\\[1pt]
+ I_1=I\frac{R_2}{R_1+R_2},\qquad I_2=I\frac{R_1}{R_1+R_2}
+ \end{gathered}
+\]
+\einheiten{Parallel liegt dieselbe Spannung an. Stromteilung proportional zum Leitwert; bei zwei Zweigen steht der Widerstand des anderen Zweigs im Zähler.\par
+\textbf{Grössen:} $R,R_E$ Widerstand [$\Omega$], $G,G_E$ Leitwert [S], $I,I_k$ Strom [A], $U$ Spannung [V].}
+}\hfill
+\thema{9. Thévenin und Norton}{\kompakt
+\textbf{Thévenin: $U_{qe}$ mit $R_{qe}$ in Serie}
+\[
+ U_a=U_{qe}-I_aR_{qe}
+\]
+\textbf{Norton: $I_{qe}$ mit $R_{qe}$ parallel}
+\[
+ I_a=I_{qe}-\frac{U_a}{R_{qe}}
+\]
+\textbf{Ersatzquelle bestimmen:}
+\[
+ \begin{gathered}
+ U_{qe}=U_{LL},\qquad I_{qe}=I_{KS}\\[1pt]
+ U_{qe}=I_{qe}R_{qe},\qquad R_{qe}=\frac{U_{LL}}{I_{KS}}\\[1pt]
+ R_{qe}=-\frac{\Delta U_a}{\Delta I_a}
+ \end{gathered}
+\]
+\einheiten{Zwei der Grössen $U_{LL},I_{KS},R_{qe}$ genügen. Für $R_{qe}$ alle unabhängigen Quellen abschalten: ideale U-Quelle kurzschliessen, ideale I-Quelle öffnen.\par
+Ersatz gilt nur an den gewählten Klemmen. Ideale Quellen lassen sich nicht ineinander umwandeln.\par
+\textbf{Grössen:} $LL$ Leerlauf, $KS$ Kurzschluss, $U_{qe},U_a$ [V], $I_{qe},I_a$ [A], $R_{qe}$ Innenwiderstand [$\Omega$].}
+}
+\zeilenabstand
+\thema{10. Quellen zusammenschalten}{\kompakt
+\textbf{Thévenin-Quellen in Serie:}
+\[
+ U_{qe}=\sum_kU_{qk},\qquad R_{qe}=\sum_kR_{qk}
+\]
+\textbf{Norton-Quellen parallel:}
+\[
+ I_{qe}=\sum_k I_{qk},\qquad G_{qe}=\sum_kG_{qk}
+\]
+\textbf{Zwei reale U-Quellen parallel:}
+\[
+ \begin{gathered}
+ R_{qe}=\frac{R_1R_2}{R_1+R_2}\\[1pt]
+ I_{qe}=\frac{U_1}{R_1}+\frac{U_2}{R_2}\\[1pt]
+ U_{qe}=\frac{U_1R_2+U_2R_1}{R_1+R_2}
+ \end{gathered}
+\]
+\einheiten{Quellenwerte mit Vorzeichen addieren. Ideale U-Quellen in Serie: Spannungen addieren; ideale I-Quellen parallel: Ströme addieren.\par
+Verschiedene ideale U-Quellen parallel bzw. I-Quellen in Serie sind widersprüchlich. Ideal: U-Quelle parallel I-Quelle bestimmt $U$; I-Quelle in Serie U-Quelle bestimmt $I$.\par
+\textbf{Einheiten:} $U$ [V], $I$ [A], $R$ [$\Omega$], $G$ [S].}
+}\hfill
+\thema{11. Last und Leistungsanpassung}{\kompakt
+\textbf{Arbeitspunkt einer realen Quelle:}
+\[
+ I_a=\frac{U_{qe}}{R_{qe}+R_L},\qquad
+ U_a=U_{qe}\frac{R_L}{R_{qe}+R_L}
+\]
+\textbf{Lastleistung und verfügbare Leistung:}
+\[
+ \begin{gathered}
+ P_L=\frac{U_{qe}^2R_L}{(R_{qe}+R_L)^2}\\[1pt]
+ P_{AV}=\frac{U_{qe}^2}{4R_{qe}}=\frac{I_{qe}^2R_{qe}}{4}\\[1pt]
+ \frac{P_L}{P_{AV}}=\frac{4}{2+R_L/R_{qe}+R_{qe}/R_L}
+ \end{gathered}
+\]
+\textbf{Maximum bei $R_L=R_{qe}$:}
+\[
+ U_a=\frac{U_{qe}}{2},\qquad I_a=\frac{I_{qe}}{2},\qquad \eta=\frac12
+\]
+\einheiten{Der Arbeitspunkt ist der Schnittpunkt von Quellenkennlinie und Lastgerade. Anpassung maximiert die Lastleistung. Bei Kurzschluss und Leerlauf ist $P_L=0$.\par
+Für ideale Quellen ist $P_{AV}$ nicht endlich definiert.\par
+\textbf{Grössen:} $R_L$ Last, $R_{qe}>0$ Innenwiderstand [$\Omega$], $U$ [V], $I$ [A], $P_L,P_{AV}$ [W], $\eta$ Wirkungsgrad.}
+}\hfill
+\thema{12. Netzwerkgleichungen}{\kompakt
+\textbf{Zahl unabhängiger Gleichungen:}
+\[
+ \begin{gathered}
+ k_g=k-1\\[1pt]
+ m_g=z-k_g=z-k+1\\[1pt]
+ k_g+m_g=z
+ \end{gathered}
+\]
+\textbf{Zweiggleichung (Pfeile im VZS):}
+\[
+ U_j=R_j I_j
+\]
+\textbf{Lineares Gleichungssystem:}
+\[
+ \mathbf A\,\mathbf x=\mathbf b
+\]
+\einheiten{Für ein zusammenhängendes Netzwerk. Knoten/Zweige und Pfeile markieren, unabhängige Kirchhoff- und Elementgleichungen aufstellen, sortieren und lösen; Bilanzen prüfen.\par
+\textbf{Grössen:} $k$ Knoten, $z$ Zweige, $k_g,m_g$ Gleichungszahlen; $\mathbf x$ Unbekannte, $\mathbf A$ Koeffizienten, $\mathbf b$ Quellen. $R_j$ [$\Omega$], $I_j$ [A], $U_j$ [V].}
+}
 \newpage
-
-% ============================================================
-% SEITE 2 -- Bauelemente / Felder / Wechselstrom / Referenz
-% ============================================================
+\kopf{2}
 \noindent
-\tile{cBauteil}{Kondensator}{%
-  \begin{itemize}
-    \item $Q = CU$
-    \item Platten-Kond.: $C = \varepsilon_0\varepsilon_r\dfrac{A}{d}$
-    \item Energie: $W=\tfrac{1}{2}CU^2=\tfrac{1}{2}QU$
-  \end{itemize}
-  Reihe: $\dfrac{1}{C_{ges}}=\dfrac{1}{C_1}+\dfrac{1}{C_2}+\dots$
-
-  Parallel: $C_{ges}=C_1+C_2+\dots$
-}\tilegap
-\tile{cBauteil}{RC-Vorgang}{%
-  \formel{u_C(t) = U_0\!\left(1-e^{-t/\tau}\right)}
-  \formel{\tau = RC}
-}\tilegap
-\tile{cBauteil}{Spule / Induktivität}{%
-  \begin{itemize}
-    \item $u_L = L\dfrac{di}{dt}$
-    \item Energie: $W=\tfrac{1}{2}LI^2$
-    \item Zylinderspule: $L=\mu_0\mu_r\dfrac{N^2A}{l}$
-  \end{itemize}
-  Reihe: $L_{ges}=L_1+L_2+\dots$
-
-  Parallel: $\dfrac{1}{L_{ges}}=\dfrac{1}{L_1}+\dfrac{1}{L_2}+\dots$
-}\tilegap
-\tile{cBauteil}{RL-Vorgang}{%
-  \formel{i_L(t) = I_0\!\left(1-e^{-t/\tau}\right)}
-  \formel{\tau = \dfrac{L}{R}}
+\thema{13. Dreieck und Stern}{\kompakt
+\textbf{Dreieck $\Delta\to Y$ Stern:}
+\[
+ S=R_{12}+R_{23}+R_{31}
+\]
+\[
+ \begin{gathered}
+ R_1=\frac{R_{12}R_{31}}{S},\qquad R_2=\frac{R_{12}R_{23}}{S}\\[1pt]
+ R_3=\frac{R_{23}R_{31}}{S}
+ \end{gathered}
+\]
+\textbf{Stern $Y\to\Delta$ Dreieck:}
+\[
+ R_p=R_1\parallel R_2\parallel R_3
+\]
+\[
+ \begin{gathered}
+ R_{12}=\frac{R_1R_2}{R_p},\qquad R_{23}=\frac{R_2R_3}{R_p}\\[1pt]
+ R_{31}=\frac{R_3R_1}{R_p}
+ \end{gathered}
+\]
+\einheiten{$R_i$ liegt vom Anschluss $i$ zum Sternpunkt; $R_{ij}$ liegt zwischen den Anschlüssen $i,j$. Die beiden Netzwerke sind an ihren drei Anschlussklemmen gleichwertig. Interne Ströme dürfen nicht übertragen werden.\par
+\textbf{Einheiten:} alle $R$, $S$ und $R_p$ in $\Omega$.}
+}\hfill
+\thema{14. Brücke mit Ersatzquellen}{\kompakt
+\textbf{Zwei Serienarme an $U_1$:}
+\[
+ U_{qe1}=U_1\frac{R_2}{R_1+R_2},\qquad
+ U_{qe2}=U_1\frac{R_4}{R_3+R_4}
+\]
+\[
+ R_{qe1}=R_1\parallel R_2,\qquad R_{qe2}=R_3\parallel R_4
+\]
+\textbf{Querstrom durch $R_5$:}
+\[
+ I_5=\frac{U_{qe1}-U_{qe2}}{R_{qe1}+R_5+R_{qe2}}
+\]
+\textbf{Abgeglichene Brücke:}
+\[
+ I_5=0\quad\Longleftrightarrow\quad R_1R_4=R_2R_3
+\]
+\einheiten{Linker Serienarm: $R_1$ oben, $R_2$ unten; rechter Arm: $R_3$ oben, $R_4$ unten. $R_5$ verbindet die Mittelpunkte, $I_5$ zeigt von links nach rechts.\par
+Für den gesuchten Zweig das übrige Netz durch Ersatzquellen ersetzen. Punkte gleichen Potentials verbinden/trennen; Quellenverdopplung darf die Knotenbilanz nicht ändern.\par
+\textbf{Einheiten:} $U_1,U_{qe1},U_{qe2}$ [V], $I_5$ [A], alle Widerstände [$\Omega$].}
+}\hfill
+\thema{15. Überlagerung (Superposition)}{\kompakt
+\textbf{Einzelwirkungen addieren:}
+\[
+ U_x=\sum_{q=1}^n U_x^{(q)},\qquad
+ I_x=\sum_{q=1}^n I_x^{(q)}
+\]
+\textbf{Alle anderen unabhängigen Quellen:}
+\[
+ U_q=0\ \Rightarrow\ \text{Kurzschluss}
+\]
+\[
+ I_q=0\ \Rightarrow\ \text{Unterbruch}
+\]
+\textbf{Leistung erst aus dem Gesamtstrom:}
+\[
+ P_R=R\left(\sum_q I_R^{(q)}\right)^2
+\]
+\einheiten{Nur lineare Netzwerke: eine Quelle aktiv, übrige unabhängige Quellen aus; Innenwiderstände bleiben. Teilwerte mit gleichen Bezugspfeilen addieren. Leistungen nicht direkt überlagern.\par
+\textbf{Grössen:} $(q)$ wirkende Quelle, $x$ betrachteter Ort; $U$ [V], $I$ [A], $R$ [$\Omega$], $P_R$ [W].}
 }
-
-\vspace{3mm}\par\noindent
-\tile{cFeld}{Elektrisches Feld}{%
-  \begin{itemize}
-    \item Feldstärke: $E = \dfrac{U}{d}$
-    \item Kraft: $F = QE$
-    \item Verschiebungsd.: $D=\varepsilon_0\varepsilon_r E$
-  \end{itemize}
-}\tilegap
-\tile{cFeld}{Magnetisches Feld}{%
-  \begin{itemize}
-    \item Durchflutung: $\Theta = NI$
-    \item Feldstärke: $H=\dfrac{NI}{l}$
-    \item Flussdichte: $B=\mu_0\mu_r H$
-    \item Fluss: $\Phi = BA$
-    \item Induktion: $u_i=-N\dfrac{d\Phi}{dt}$
-    \item Kraft: $F = BIl$
-  \end{itemize}
-}\tilegap
-\tile{cWechsel}{Wechselstromgrößen}{%
-  \begin{itemize}
-    \item $u(t)=\hat u\sin(\omega t+\varphi)$
-    \item $\omega = 2\pi f = \dfrac{2\pi}{T}$
-    \item Effektivwert: $U_{eff}=\dfrac{\hat u}{\sqrt2}$
-    \item Gleichrichtwert: $\bar u=\dfrac{2}{\pi}\hat u$
-  \end{itemize}
-}\tilegap
-\tile{cRef}{Konstanten \& SI-Vorsätze}{%
-  $\varepsilon_0=\SI{8.854e-12}{\farad\per\meter}$
-
-  $\mu_0=4\pi\times10^{-7}\,\si{\henry\per\meter}$
-
-  $e=\SI{1.602e-19}{\coulomb}$
-  \vspace{2pt}
-
-  \begin{tabular}{@{}llll@{}}
-    p:$10^{-12}$ & n:$10^{-9}$ & µ:$10^{-6}$ & m:$10^{-3}$ \\
-    k:$10^{3}$ & M:$10^{6}$ & G:$10^{9}$ &
-  \end{tabular}
+\zeilenabstand
+\thema{16. Knotenpotenzialverfahren}{\kompakt
+\textbf{Knotengleichung:}
+\[
+ I_i=\sum_{j\ne i}G_{ij}(V_i-V_j)
+\]
+\textbf{Admittanzmatrix:}
+\[
+ \mathbf Y\,\mathbf V=\mathbf I
+\]
+\[
+ Y_{ii}=\sum_{j\ne i}G_{ij},\qquad Y_{ij}=-G_{ij}\ (i\ne j)
+\]
+\textbf{Bezugsknoten $0$:}
+\[
+ V_0=0,\qquad \mathbf Y_{\mathrm{red}}\mathbf V_{\mathrm{red}}=
+ \mathbf I_{\mathrm{red}}
+\]
+\textbf{Zweiggrössen:}
+\[
+ U_{ij}=V_i-V_j,\qquad I_{ij}=G_{ij}(V_i-V_j)
+\]
+\einheiten{Quellen als positive Einströmungen zum Knoten. Ohne Verbindung ist $G_{ij}=0$. Volle Matrix symmetrisch, Zeilen-/Spaltensummen 0.\par
+Bezugsknoten wählen, dessen Zeile/Spalte streichen und reduziertes System lösen.\par
+\textbf{Einheiten:} $G_{ij},Y_{ij}$ [S], $V_i,U_{ij}$ [V], $I_i,I_{ij}$ [A].}
+}\hfill
+\thema{17. Maschenstromverfahren}{\kompakt
+\textbf{Maschengleichungen:}
+\[
+ \mathbf Z\,\mathbf I_m=\mathbf U_q
+\]
+\[
+ \begin{gathered}
+ Z_{ii}=\sum_{R\ \text{in Masche }i}R\\[1pt]
+ Z_{ij}=\pm\sum_{R\ \text{gemeinsam}}R\quad(i\ne j)
+ \end{gathered}
+\]
+\textbf{Zwei gleich umlaufende Maschen:}
+\[
+ \begin{aligned}
+ (R_1+R_c)I_{m1}-R_cI_{m2}&=U_{q1}\\[1pt]
+ -R_cI_{m1}+(R_2+R_c)I_{m2}&=U_{q2}
+ \end{aligned}
+\]
+\textbf{Gemeinsamer Zweig:}
+\[
+ I_c=I_{m1}-I_{m2}
+\]
+\einheiten{U-Quellen und gleich umlaufende Maschen wählen. Koppelwiderstand: $-$ bei entgegengesetztem Zweigdurchlauf, sonst $+$. $U_{qi}$: Spannungsanhebung in Umlaufrichtung.\par
+Nach dem Lösen Maschenströme zu Zweigströmen zusammensetzen.\par
+\textbf{Grössen:} $R_c$ gemeinsamer, $R_1,R_2$ übrige Widerstände; $Z,R$ [$\Omega$], $I_m,I_c$ [A], $U_q$ [V].}
+}\hfill
+\thema{18. Widerstand und Spule}{\kompakt
+\textbf{Widerstand im Zeitbereich:}
+\[
+ u_R(t)=R\,i(t),\qquad p_R(t)=R\,i^2(t)
+\]
+\textbf{Spule (VZS):}
+\[
+ u_L(t)=L\frac{\mathrm{d}i_L(t)}{\mathrm{d}t}
+\]
+\[
+ i_L(t)=i_L(t_0)+\frac1L\int_{t_0}^t u_L(\tau)\,\mathrm{d}\tau
+\]
+\textbf{Magnetische Energie:}
+\[
+ w_L(t)=\frac12 L\,i_L^2(t)
+\]
+\textbf{Stetigkeit und Gleichstrom-Endzustand:}
+\[
+ i_L(0^+)=i_L(0^-),\qquad u_L(\infty)=0
+\]
+\einheiten{Der Spulenstrom springt bei endlicher Spannung nicht. Bei konstantem Strom verhält sich die ideale Spule wie ein Kurzschluss; Selbstinduktion wirkt Stromänderungen entgegen.\par
+\textbf{Grössen:} $R$ [$\Omega$], $L$ Induktivität [H = Vs/A], $u$ [V], $i$ [A], $p$ [W], $w_L$ Energie [J], $t,\tau$ [s].}
 }
-
+\zeilenabstand
+\thema{19. Kondensator und Energie}{\kompakt
+\textbf{Kondensator (VZS):}
+\[
+ q_C(t)=C\,u_C(t),\qquad i_C(t)=C\frac{\mathrm{d}u_C(t)}{\mathrm{d}t}
+\]
+\[
+ u_C(t)=u_C(t_0)+\frac1C\int_{t_0}^t i_C(\tau)\,\mathrm{d}\tau
+\]
+\textbf{Elektrische Energie:}
+\[
+ w_C(t)=\frac12 C\,u_C^2(t)=\frac{q_C^2(t)}{2C}
+\]
+\textbf{Stetigkeit und Gleichstrom-Endzustand:}
+\[
+ u_C(0^+)=u_C(0^-),\qquad i_C(\infty)=0
+\]
+\einheiten{Die Kondensatorspannung springt bei endlichem Strom nicht. Bei konstanter Spannung wirkt der ideale Kondensator als Unterbruch. Ideale $L$ und $C$ speichern Energie verlustlos und können sie wieder abgeben.\par
+\textbf{Grössen:} $C$ Kapazität [F = As/V], $q_C$ Ladung [C], $u_C$ [V], $i_C$ [A], $w_C$ Energie [J], $t,\tau$ [s].}
+}\hfill
+\thema{20. Periodische Zeitabhängigkeit}{\kompakt
+\textbf{Periodische Funktion:}
+\[
+ x(t+nT)=x(t),\qquad n\in\mathbb Z
+\]
+\textbf{Frequenz und Kreisfrequenz:}
+\[
+ f=\frac1T,\qquad \omega=2\pi f=\frac{2\pi}{T}
+\]
+\textbf{Harmonische Spannung:}
+\[
+ u(t)=\widehat U\cos(\omega t+\varphi_0)
+\]
+\textbf{Sinus ohne Gleichanteil:}
+\[
+ \begin{gathered}
+ \overline u=0,\qquad U_{\mathrm{eff}}=\frac{\widehat U}{\sqrt2}\\[1pt]
+ \overline{|u|}=\frac{2\widehat U}{\pi}
+ \end{gathered}
+\]
+\einheiten{Kleinbuchstaben: Momentanwerte; Grossbuchstaben bei Wechselgrössen ohne Zusatz: Effektivwerte. Harmonisch bedeutet sinus-/cosinusförmig.\par
+\textbf{Grössen:} $T$ Periodendauer [s], $f$ Frequenz [Hz], $\omega$ Kreisfrequenz [rad/s], $\varphi_0$ Nullphasenwinkel [rad], $\widehat U$ Amplitude [V]. $x$ beliebige periodische Grösse.}
+}\hfill
+\thema{21. Mittelwerte und Kennwerte}{\kompakt
+\textbf{Linear, Betrag und Effektivwert:}
+\[
+ \begin{gathered}
+ \overline x=\frac1T\int_0^T x(t)\,\mathrm{d}t\\[1pt]
+ \overline{|x|}=\frac1T\int_0^T|x(t)|\,\mathrm{d}t\\[1pt]
+ X_{\mathrm{eff}}=\sqrt{\frac1T\int_0^T x^2(t)\,\mathrm{d}t}
+ \end{gathered}
+\]
+\textbf{Wirkleistung am Widerstand:}
+\[
+ P=\frac1T\int_0^T p(t)\,\mathrm{d}t
+   =R I_{\mathrm{eff}}^2=\frac{U_{\mathrm{eff}}^2}{R}
+\]
+\textbf{Scheitel- und Formfaktor:}
+\[
+ SF=\frac{\widehat X}{X_{\mathrm{eff}}},\qquad
+ FF=\frac{X_{\mathrm{eff}}}{\overline{|x|}}
+\]
+\einheiten{Beim Sinus: $SF=\sqrt2\approx1{,}414$; $FF=\pi/(2\sqrt2)\approx1{,}111$. SF hier für symmetrische Spitzen. $\overline x$ ist der Gleichanteil.\par
+Effektivwert: gleiche Wärmewirkung wie ein Gleichwert. Für andere Kurvenformen sind sinuskalibrierte Messgeräte nicht zwingend korrekt.\par
+\textbf{Einheiten:} Mittelwerte wie $x$, $T$ [s], $P$ [W], $R$ [$\Omega$], $SF,FF$ dimensionslos.}
+}
+\zeilenabstand
+\thema{22. RC: Laden und Entladen}{\kompakt
+\textbf{Zeitkonstante:}\quad $\tau=RC$
+\par\textbf{Laden von $0$ auf $U_0$:}
+\[
+ \begin{gathered}
+ RC\frac{\mathrm{d}u_C}{\mathrm{d}t}+u_C=U_0\\[1pt]
+ u_C(t)=U_0(1-e^{-t/\tau})\\[1pt]
+ i_C(t)=\frac{U_0}{R}e^{-t/\tau}
+ \end{gathered}
+\]
+\textbf{Entladen von $U_0$ auf $0$:}
+\[
+ u_C(t)=U_0e^{-t/\tau},\qquad i_{\mathrm{ab}}(t)=\frac{U_0}{R}e^{-t/\tau}
+\]
+\textbf{Grenzwerte beim Laden:}
+\[
+ u_C(0^+)=0,\quad i_C(0^+)=\frac{U_0}{R},\quad i_C(\infty)=0
+\]
+\einheiten{Für $t\geq0$. Beim Entladen zeigt $i_{\mathrm{ab}}$ aus dem positiven Kondensatoranschluss; der Strom im VZS ist dessen negativer Wert.\par
+Nach $\tau$: 63,2\% der Änderung erreicht; nach $5\tau$: 99,3\%. Anfangs ungeladen wirkt $C$ wie ein Kurzschluss, im DC-Endzustand wie ein Unterbruch.\par
+\textbf{Einheiten:} $R$ [$\Omega$], $C$ [F], $\tau,t$ [s], $U_0,u_C$ [V], $i_C,i_{\mathrm{ab}}$ [A].}
+}\hfill
+\thema{23. RC: Umladen und Umschalten}{\kompakt
+\textbf{Allgemeiner Übergang ab $t_0$:}
+\[
+ \begin{gathered}
+ u_C(t)=U_e+(U_a-U_e)e^{-(t-t_0)/\tau}\\[1pt]
+ i_C(t)=\frac{U_e-U_a}{R_E}e^{-(t-t_0)/\tau}\\[1pt]
+ \tau=R_EC
+ \end{gathered}
+\]
+\textbf{Kondensator an Spannungsteiler:}
+\[
+ U_e=U_0\frac{R_2}{R_1+R_2},\qquad R_E=R_1\parallel R_2
+\]
+\textbf{Neuer Schaltzeitpunkt $t_1$:}
+\[
+ u_C(t)=U_{e,2}+[u_C(t_1)-U_{e,2}]e^{-(t-t_1)/\tau_2}
+\]
+\einheiten{$U_a=u_C(t_0)$ Anfangs-, $U_e=u_C(\infty)$ Endspannung. $R_E$ vom Kondensator gesehener Widerstand nach dem Schalten, unabhängige Quellen dabei abgeschaltet.\par
+Bei jedem Umschalten: bisherigen Endwert am Schaltzeitpunkt als neuen Anfangswert übernehmen; Zeit neu ab diesem Punkt zählen. Im DC-Endzustand $C$ öffnen.\par
+\textbf{Einheiten:} $U_a,U_e,u_C$ [V], $i_C$ [A], $R_E$ [$\Omega$], $C$ [F], $t,\tau$ [s].}
+}\hfill
+\thema{24. RL-Schalten und Endzustand}{\kompakt
+\textbf{Allgemeiner Übergang ab $t_0$:}
+\[
+ \begin{gathered}
+ i_L(t)=I_e+(I_a-I_e)e^{-(t-t_0)/\tau}\\[1pt]
+ \tau=\frac{L}{R_E}
+ \end{gathered}
+\]
+\textbf{Einschalten an $U_0$, $I_a=0$:}
+\[
+ i_L(t)=\frac{U_0}{R_E}(1-e^{-t/\tau}),\qquad
+ u_L(t)=U_0e^{-t/\tau}
+\]
+\textbf{Ausschalten über $R_E$, Endstrom 0:}
+\[
+ i_L(t)=I_ae^{-t/\tau},\qquad u_L(t)=-R_EI_ae^{-t/\tau}
+\]
+\textbf{Periodisch eingeschwungener Zustand:}
+\[
+ x(t+T)=x(t)
+\]
+\einheiten{$I_a=i_L(t_0)$ Anfangs-, $I_e=i_L(\infty)$ Endstrom. $R_E$ am Spulenanschluss bei abgeschalteten Quellen. Spezialfälle ab $t_0=0$, $u_L$ im VZS.\par
+Strom stetig; im DC-Endzustand $L$ kurzschliessen. Periodisch: Endwerte als nächste Anfangswerte fortsetzen, bis sich der Verlauf wiederholt (Kap. 13.2).\par
+\textbf{Einheiten:} $I_a,I_e,i_L$ [A], $U_0,u_L$ [V], $L$ [H], $R_E$ [$\Omega$], $t,T,\tau$ [s].}
+}
 \end{document}
