@@ -42,21 +42,27 @@
 \begin{document}
 \kopf{1}
 \thema{1. Vektoren und Skalarprodukt}{
-Für $u,v\in\R^n$:
+Für $u,v\in\R^n$ ist das \textbf{Skalarprodukt} eine Zahl:
+Man multipliziert die entsprechenden Komponenten und addiert die
+Produkte. Es misst, wie stark zwei Vektoren in dieselbe Richtung zeigen.
 \[
  \begin{gathered}
  u\cdot v=\sum_{i=1}^n u_iv_i,\\
- \|v\|_2=\sqrt{v\cdot v}.
+ \|v\|_2=\sqrt{v\cdot v}=\sqrt{\sum_{i=1}^n v_i^2}.
  \end{gathered}
 \]
+\textbf{Länge:} $\|v\|_2$ ist die euklidische Länge von $v$ (Abstand
+vom Ursprung). Für $v=0$ ist die Länge $0$; sonst ist $\|v\|_2>0$.
+
 \[
  u\perp v\iff u\cdot v=0.
 \]
-Winkel für $u,v\ne0$:
+\textbf{Senkrecht:} Zwei Vektoren stehen genau dann senkrecht aufeinander,
+wenn ihr Skalarprodukt $0$ ist. Für $u,v\ne0$ erhält man den Winkel:
 \[
  \cos\varphi=\frac{u\cdot v}{\|u\|_2\|v\|_2}.
 \]
-Projektion auf den Vektor $v\ne0$:
+\textbf{Projektion:} Der Anteil von $u$ in Richtung des Vektors $v\ne0$ ist
 \[
  \operatorname{proj}_v(u)=\frac{u\cdot v}{v\cdot v}\,v.
 \]
