@@ -200,11 +200,12 @@ Ebene. Dafür muss $P-A$ parallel zu $n$ sein.
 }
 \hfill
 \thema{6. Parameter- und Koordinatenform umwandeln}{
-\textbf{Parameter $\to$ Koordinaten} (Skript Kap.\ 7.4):
+\textbf{Parameterform $\to$ Koordinatenform:}
 \begin{enumerate}
- \item $n=u\times v=(a,b,c)^T$ berechnen.
- \item Aufpunkt einsetzen: $d=-n\cdot A$.
- \item $ax_1+bx_2+cx_3+d=0$ aufschreiben.
+ \item Parameterform in $x$- und $y$-Gleichung aufteilen.
+ \item Eine Gleichung nach $t$ auflösen.
+ \item $t$ in die andere Gleichung einsetzen.
+ \item Vereinfachen und in die Form $ax+by=c$ bringen.
 \end{enumerate}
 \textbf{Koordinaten $\to$ Parameter:}
 Eine Variable mit Koeffizient $\ne0$ isolieren;
@@ -441,7 +442,46 @@ $Ax=0$ hat immer die Lösung $x=0$.
 $x=x_p+x_h$, wobei $Ax_p=b$ und $x_h\in\kernel(A)$.
 }
 \hfill
-\thema{14. Geraden in der Ebene}{
+\thema{14. Gaußsche Elimination: Rechenbeispiel}{
+Ziel: Die erweiterte Matrix durch elementare
+Zeilenoperationen in Zeilenstufenform bringen.
+
+\textbf{Beispiel:}
+\[
+ \begin{aligned}
+ x+y+z&=6,\\
+ 2x-y+z&=3,\\
+ x+2y-z&=2.
+ \end{aligned}
+\]
+\[
+ \left(\begin{array}{ccc|c}
+ 1&1&1&6\\2&-1&1&3\\1&2&-1&2
+ \end{array}\right)
+\]
+\textbf{1. Erste Spalte eliminieren:}
+$Z_2\leftarrow Z_2-2Z_1$, $Z_3\leftarrow Z_3-Z_1$.
+\[
+ \left(\begin{array}{ccc|c}
+ 1&1&1&6\\0&-3&-1&-9\\0&1&-2&-4
+ \end{array}\right)
+\]
+\textbf{2. Pivot tauschen und weiter eliminieren:}
+$Z_2\leftrightarrow Z_3$, danach
+$Z_3\leftarrow Z_3+3Z_2$.
+\[
+ \left(\begin{array}{ccc|c}
+ 1&1&1&6\\0&1&-2&-4\\0&0&-7&-21
+ \end{array}\right)
+\]
+\textbf{3. Rückwärtseinsetzen:}
+$z=3$, $y=2$, $x=1$; also $(x,y,z)=(1,2,3)$.
+
+Pivot $=0$: geeignete Zeile tauschen. Eine Zeile
+$0\;0\;0\mid b$ mit $b\ne0$ bedeutet: keine Lösung.
+}
+\hfill
+\thema{15. Geraden in der Ebene}{
 Durch $P=(p_1,p_2)^T$ mit $v=(v_1,v_2)^T\ne0$:
 \[
  g:\quad\begin{pmatrix}x\\y\end{pmatrix}
@@ -464,7 +504,6 @@ Für $v_1\ne0$: Parameter $t$ eliminieren.
  v_2(x-p_1)-v_1(y-p_2)=0.
 \]
 Für $v_1=0$ ist die Gerade vertikal: $x=p_1$.
-
 \textbf{Durch zwei Punkte:} $v=Q-P$, $P\ne Q$.
 \textbf{Koordinaten $\to$ Parameter:}
 Für $ax+by+d=0$, $(a,b)\ne(0,0)$:
@@ -474,15 +513,15 @@ Für $ax+by+d=0$, $(a,b)\ne(0,0)$:
 \]
 Aufpunkt bestimmen: für $b\ne0$ wähle $P=(0,-d/b)^T$;
 sonst $P=(-d/a,0)^T$. Dann $x=P+tv$.
-\textbf{Parameter $\to$ Koordinaten:} $n=(v_2,-v_1)^T$,
-$d=-n\cdot P$; $n\cdot x+d=0$.
+\textbf{Schnittpunkt:} Zwei Geraden in Koordinatenform als LGS
+lösen; $x$ bestimmen, einsetzen, $y$ berechnen; $S(x\mid y)$.
 \textbf{Funktionsform $\to$ Parameter:} Für $y=mx+b$:
 $P=(0,b)^T$, $v=(1,m)^T$.
 }
 \renewcommand{\seitenbereich}{Spätere Themen}
 \newpage
 \kopf{3}
-\thema{15. Vektorräume und Basen}{
+\thema{16. Vektorräume und Basen}{
 \[
  \begin{gathered}
  \spann(v_1,\ldots,v_k)\\
@@ -510,7 +549,7 @@ Matrix $A$ verwenden.
 je einen Basisvektor bestimmen.
 }
 \hfill
-\thema{16. Matrizen und Inverse}{
+\thema{17. Matrizen und Inverse}{
 $A\in\K^{m\times n}$, $B\in\K^{n\times p}$:
 \[
  \begin{aligned}
@@ -541,7 +580,7 @@ $ad-bc\ne0$:
 \]
 }
 \hfill
-\thema{17. Determinante und Rang}{
+\thema{18. Determinante und Rang}{
 \[
  \det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc.
 \]
@@ -567,7 +606,7 @@ Bei Dreiecksmatrizen: Produkt der Diagonaleinträge.
 \textbf{Rang:} Anzahl der Pivots nach dem Gauß-Verfahren.
 }
 \zeilenabstand
-\thema{18. Lineare Abbildungen}{
+\thema{19. Lineare Abbildungen}{
 $T:V\to W$ ist linear, wenn
 \[
  \begin{gathered}
@@ -590,7 +629,7 @@ Standardbasisvektoren: $A=(T(e_1),\ldots,T(e_n))$.
 \textbf{Surjektiv:} $\bild(T)=W$.
 }
 \hfill
-\thema{19. Eigenwerte und Eigenvektoren}{
+\thema{20. Eigenwerte und Eigenvektoren}{
 $A\in\K^{n\times n}$: $\lambda$ ist Eigenwert, wenn für
 $v\ne0$ gilt $Av=\lambda v$.
 
@@ -617,7 +656,7 @@ Nullstelle $\lambda$ in $p_A$.
 \]
 }
 \hfill
-\thema{20. Diagonalisierung}{
+\thema{21. Diagonalisierung}{
 $A\in\K^{n\times n}$ ist genau dann über $\K$
 diagonalisierbar, wenn es $n$ linear unabhängige
 Eigenvektoren über $\K$ gibt.
@@ -645,7 +684,7 @@ Potenzen für $k\ge0$:
 \]
 }
 \zeilenabstand
-\thema{21. Orthogonale Matrizen}{
+\thema{22. Orthogonale Matrizen}{
 Eine reelle quadratische Matrix $Q$ ist orthogonal, wenn
 \[
  Q^TQ=I.
@@ -667,7 +706,7 @@ Die Spalten (und Zeilen) bilden eine Orthonormalbasis:
 Orthogonale Abbildungen erhalten Längen und Winkel.
 }
 \hfill
-\thema{22. Kleinste Quadrate}{
+\thema{23. Kleinste Quadrate}{
 Für $A\in\R^{m\times n}$ mit linear unabhängigen Spalten:
 \[
  \min_x\|Ax-b\|_2^2.
