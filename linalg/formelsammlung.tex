@@ -1,734 +1,389 @@
 \documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage[ngerman]{babel}
-\usepackage[a4paper,margin=10mm]{geometry}
+\usepackage[a4paper,margin=9mm]{geometry}
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage[expansion=false]{microtype}
+\usepackage{xcolor}
 \usepackage{enumitem}
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{1pt}
-\setlength{\fboxsep}{1.5mm}
-\setlength{\fboxrule}{0.4pt}
-\setlist{nosep,leftmargin=*}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\K}{\mathbb{K}}
+\setlength{\parskip}{1.4pt}
+\setlength{\fboxsep}{2mm}
+\setlength{\fboxrule}{0.45pt}
+\setlist{nosep,leftmargin=*,topsep=1pt}
+\definecolor{ink}{HTML}{173548}
+\definecolor{line}{HTML}{78909C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\lVert#1\rVert}
 \newcommand{\rang}{\operatorname{rang}}
-\newcommand{\spur}{\operatorname{tr}}
-\newcommand{\kernel}{\operatorname{Ker}}
-\newcommand{\bild}{\operatorname{Bild}}
-\newcommand{\spann}{\operatorname{span}}
-\newlength{\kastenbreite}
-\setlength{\kastenbreite}{\dimexpr(\textwidth-4mm)/3-2\fboxsep-2\fboxrule\relax}
-% Abgleich: Skript Kapitel 1--3 und 5--7; Kapitel 4 ausgeschlossen.
-% Neun Kacheln pro Seite: drei Spalten, drei Zeilen.
-\newsavebox{\themeninhalt}
-\newcommand{\thema}[2]{%
-  \sbox{\themeninhalt}{\begin{minipage}[t]{\kastenbreite}
-    \fontsize{7.5}{8.5}\selectfont
-    \raggedright
-    \setlength{\abovedisplayskip}{2pt}
-    \setlength{\belowdisplayskip}{2pt}
-    \setlength{\abovedisplayshortskip}{1pt}
-    \setlength{\belowdisplayshortskip}{1pt}
-    {\fontsize{8.5}{9.5}\selectfont\bfseries #1}\par
-    \vspace{0.6mm}\hrule\vspace{0.6mm}
-    #2
+\newcommand{\vct}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\merk}[1]{\par\textbf{Kontrolle:} #1}
+\newlength{\tilewidth}
+\setlength{\tilewidth}{\dimexpr(\textwidth-3mm)/2-2\fboxsep-2\fboxrule\relax}
+\newsavebox{\tilecontent}
+\newif\ifkachelueberlauf
+\AtEndDocument{\ifkachelueberlauf
+  \PackageError{LALG}{Mindestens eine Kachel zu hoch}{Inhalt der gemeldeten Kachel kuerzen.}%
+\fi}
+\newcommand{\tile}[3]{%
+  \sbox{\tilecontent}{\begin{minipage}[t]{\tilewidth}
+    \fontsize{9.5}{11}\selectfont\raggedright
+    \setlength{\abovedisplayskip}{2.4pt}
+    \setlength{\belowdisplayskip}{2.4pt}
+    \setlength{\abovedisplayshortskip}{1.4pt}
+    \setlength{\belowdisplayshortskip}{1.4pt}
+    {\color{ink}\fontsize{11}{12.5}\selectfont\bfseries #1\enspace #2}\par
+    \vspace{0.8mm}{\color{line}\hrule}\vspace{1mm}
+    #3
   \end{minipage}}%
-  \ifdim\dimexpr\ht\themeninhalt+\dp\themeninhalt\relax>84mm
-    \PackageError{Formelsammlung}{Kachel #1 ist hoeher als 84mm}{Inhalt kuerzen oder Kachelhoehe anpassen.}%
+  \typeout{TILE #1: \the\dimexpr\ht\tilecontent+\dp\tilecontent\relax}%
+  \ifdim\dimexpr\ht\tilecontent+\dp\tilecontent\relax>81mm
+    \global\kachelueberlauftrue
+    \PackageWarning{LALG}{Kachel #1 zu hoch}%
   \fi
-  \fbox{\begin{minipage}[t][84mm][t]{\kastenbreite}
-    \usebox{\themeninhalt}
-  \end{minipage}}%
+  {\color{line}\fbox{\color{black}\begin{minipage}[t][81mm][t]{\tilewidth}
+    \usebox{\tilecontent}
+  \end{minipage}}}%
 }
-\newcommand{\seitenbereich}{Kap.\ 1--3 und 5--7}
-\newcommand{\kopf}[1]{%
-  {\large\bfseries Formelsammlung LALG}\hfill{\small \seitenbereich\enspace|\enspace Seite #1}\par
-  \vspace{2mm}
+\newcommand{\rowgap}{\par\vspace{2mm}\noindent}
+\newcommand{\head}[2]{%
+  {\color{ink}\Large\bfseries LALG\enspace Formelsammlung}\hfill
+  {\small\bfseries #1\,/\,2}\par
+  {\small #2}\par\vspace{2mm}
 }
-\newcommand{\zeilenabstand}{\par\vspace{1.5mm}}
+% Grundlagen: Arbeitsmappe LALG1, Kap. 1--3 und 5--7, Serien 1, 3--5.
+% Aufgabenschwerpunkte: Test 1 (13.10.2025). Kapitel 4 bewusst ausgeschlossen.
+% Nur Kernformeln und Rechenschritte; keine Beispiele.
+% Notation: Skript Kap. 3, 5.2, 7.1--7.4; Test 1; Serien 1, 3--5.
+% Vektorpfeile, Skalarprodukt odot, Projektion f, Lot h, Fuss F; kein t_0.
 \begin{document}
-\kopf{1}
-\thema{1. Vektoren und Skalarprodukt}{
-\textbf{In einer Orthonormalbasis in $\R^3$:}
+\head{1}{Notation wie im Skript: Vektoren mit Pfeil, Skalarprodukt $\odot$}
+\tile{1}{Geraden}{
+\setlength{\belowdisplayskip}{1.4pt}
+\setlength{\belowdisplayshortskip}{0.4pt}
+\textbf{Parameterform:}
 \[
- \begin{gathered}
- u\cdot v=u_1v_1+u_2v_2+u_3v_3,\\
- \|v\|_2=\sqrt{v_1^2+v_2^2+v_3^2}.
- \end{gathered}
+ \boxed{g:\vec x=\vec A+\lambda\vec v},\quad\lambda\in\R.
 \]
-In $\R^2$ den dritten Term weglassen. Allgemein:
-$u\cdot v=u_1v_1+\cdots+u_nv_n$ und
-$\|v\|_2=\sqrt{v_1^2+\cdots+v_n^2}$.
-\textbf{Länge:} Abstand vom Ursprung; $\|v\|_2=0\iff v=0$.
+$\vec A$: Aufpunkt; $\vec v\ne\vec0$: Richtungsvektor.
+$\lambda$ (auch $s,t$): frei wählbare Zahl.
+Durch $A,B$: $\vec v=\vec B-\vec A$.
 
+\textbf{Koordinatenform in $\R^2$:}
 \[
- u\perp v\iff u\cdot v=0.
+ \vec n=\vct{v_y\\-v_x},\qquad d=-\vec A\odot\vec n,
 \]
-\textbf{Winkel / Kosinus-Ähnlichkeit} (Skript: $p(u,v)$),
-für $u,v\ne0$:
 \[
- p(u,v)=\cos\varphi=\frac{u\cdot v}{\|u\|_2\|v\|_2}.
+ \boxed{n_xx+n_yy+d=0}.
 \]
-$p=1$: gleiche Richtung; $p=0$: senkrecht;
-$p=-1$: entgegengesetzt. Winkel: $\varphi=\arccos(p)$.
+$\vec n$: Normalenvektor (senkrecht zur Geraden).
+Zurück: Aufpunkt einsetzen und bestimmen.
+\[
+\vec v=(n_y,-n_x)^T
+=\begin{pmatrix}n_y\\-n_x\end{pmatrix}
+\]
 
-\textbf{Projektion:} Der Anteil von $u$ in Richtung des Vektors $v\ne0$ ist
-\[
- \operatorname{proj}_v(u)=\frac{u\cdot v}{v\cdot v}\,v.
-\]
-\textbf{Zerlegung:} $f=\operatorname{proj}_v(u)$,
-$h=u-f$, $h\perp v$. Vorzeichenbehaftete Schattenlänge:
-$(u\cdot v)/\|v\|_2$.
-\textbf{Kreuzprodukt in $\R^3$:} $u\times v\perp u,v$;
-Länge = Fläche des aufgespannten Parallelogramms.
+\textbf{Funktionsform:} $y=mx+d$.
+
+\textbf{Punktprobe:} Punkt einsetzen.\par
+\textbf{Schnittpunkt:} beide Gleichungen gemeinsam lösen.
 }
 \hfill
-\thema{2. Projektion und Spiegelung}{
-Gerade $g=A+tv$ in $\R^2$, $v=(v_1,v_2)^T\ne0$:
-\[
- n=\begin{pmatrix}v_2\\-v_1\end{pmatrix},\qquad n\cdot v=0.
-\]
-Senkrechter Anteil von $P-A$:
-\[
- h=\frac{(P-A)\cdot n}{n\cdot n}\,n.
-\]
-$h$: vom Lotfußpunkt zu $P$, $d(P,g)=\|h\|_2$; durch den Ursprung: $A=0$.
-\[
- \boxed{P'=P-h}\quad\text{Projektion},
-\]
-\[
- \boxed{P''=P-2h}\quad\text{Spiegelung}.
-\]
-\textbf{Rechnen:} $r=P-A$, zuerst den Faktor
-\[
- c=\frac{r_1n_1+r_2n_2}{n_1^2+n_2^2},\quad
- h=\begin{pmatrix}cn_1\\cn_2\end{pmatrix}.
-\]
-Zähler, Nenner und negative Zahlen einklammern;
-komponentenweise subtrahieren.
-
-\textbf{Kontrolle:} $P'-A$ ist ein Vielfaches von $v$;
-$h\cdot v=0$; $P'=(P+P'')/2$.
-}
-\hfill
-\thema{3. Abstand Punkt--Gerade}{
-\textbf{Satz:} Der kürzeste Abstand von $P$ zu $g$ ist die
-Länge des Lots (senkrechte Verbindung).
-
-Für $g: x=A+tv$ in $\R^2$ oder $\R^3$, $v\ne0$:
-$A$ ist der \textbf{Aufpunkt}, $r=P-A$.
-\[
- t_0=\frac{r\cdot v}{v\cdot v},\qquad F=A+t_0v.
-\]
-$F$ ist der Lotfußpunkt; $(P-F)\cdot v=0$.
-\[
- \boxed{d(P,g)=\|P-F\|_2}
-\]
-\[
- d(P,g)^2=\|r\|_2^2-\frac{(r\cdot v)^2}{v\cdot v}.
-\]
-In $\R^3$ auch:
-\[
- d(P,g)=\frac{\|v\times(P-A)\|_2}{\|v\|_2}.
-\]
-In $\R^2$, $g: ax+by=c$:
-\[
- d(P,g)=\frac{|ap_1+bp_2-c|}{\sqrt{a^2+b^2}}.
-\]
-\textbf{Punkt in einer Ebene:} Liegen $P$ und $g$ in
- derselben Ebene, gilt ebenfalls die Lotformel.
-$\|P-A\|_2$ ist nur dann der Geradenabstand, wenn $A=F$.
-}
-\zeilenabstand
-\thema{4. Ebene: Parameter- und Normalenform}{
-\textbf{Parameterform} (Skript Kap.\ 7.1):
-\[
- \boxed{E: x=A+\lambda u+\mu v},\quad\lambda,\mu\in\R.
-\]
-$A$: Aufpunkt/Stützpfeil; $u,v$: nicht kollineare
-Richtungsvektoren (müssen nicht senkrecht sein).
-Durch drei nicht kollineare Punkte $A,B,C$:
-$u=B-A$, $v=C-A$.
-
-\textbf{Normalenvektor / Vektorprodukt:}
-\[
- n=u\times v=
- \begin{pmatrix}
- u_2v_3-u_3v_2\\u_3v_1-u_1v_3\\u_1v_2-u_2v_1
- \end{pmatrix}\ne0.
-\]
-\textbf{Normalenform:} $(x-A)\cdot n=0$.
-
-\textbf{Koordinatenform} (Skript Kap.\ 7.3):
-\[
- ax_1+bx_2+cx_3+d=0,
-\]
-$n=(a,b,c)^T$, $d=-n\cdot A$.
-\textbf{Punktprobe:} $P\in E\iff n\cdot P+d=0$.
-In Parameterform: $P-A=\lambda u+\mu v$ lösen.
-\textbf{Achtung:} Skript $\odot$ = hier $\cdot$ (Skalarprodukt).
-}
-\hfill
-\thema{5. Hesse-Normalenform und Punkt--Ebene}{
-\textbf{Skript Kap.\ 7.1--7.2:} $h(P)$ ist der
-\emph{vorzeichenbehaftete} Abstand; die gesuchte Länge ist $|h(P)|$.
-Für $E:x=A+\lambda u+\mu v$, $n=u\times v\ne0$:
-\[
- \boxed{h(P)=\frac{(P-A)\cdot n}{\|n\|_2}}
-\]
-Für $E:ax_1+bx_2+cx_3+d=0$:
-\[
- \boxed{h(P)=\frac{ap_1+bp_2+cp_3+d}{\sqrt{a^2+b^2+c^2}}}
-\]
-\textbf{Abstand Punkt--Ebene:} $d(P,E)=|h(P)|$.
-\textbf{Punkt in Ebene:} $P\in E\iff h(P)=0$.
-\textbf{Abstand vom Ursprung:}
-\[
- d(0,E)=\frac{|d|}{\sqrt{a^2+b^2+c^2}}.
-\]
-\textbf{Normierte Ebenengleichung:} Mit $n_0=n/\|n\|_2$:
-$n_0\cdot x+d/\|n\|_2=0$.
-\textbf{Lotfußpunkt / Spiegelpunkt:}
-\[
- F=P-h(P)n_0,\quad P^*=P-2h(P)n_0.
-\]
-$\|P-A\|_2$ misst zum Aufpunkt, nicht automatisch zur
-Ebene. Dafür muss $P-A$ parallel zu $n$ sein.
-}
-\hfill
-\thema{6. Parameter- und Koordinatenform umwandeln}{
-\textbf{Parameterform $\to$ Koordinatenform:}
+\tile{2}{Lineare Abhängigkeit}{
+\textbf{Für drei Vektoren in $\R^3$:}
 \begin{enumerate}
- \item Parameterform in $x$- und $y$-Gleichung aufteilen.
- \item Eine Gleichung nach $t$ auflösen.
- \item $t$ in die andere Gleichung einsetzen.
- \item Vereinfachen und in die Form $ax+by=c$ bringen.
+\item \textbf{Matrix aufstellen:} Vektoren als Zeilen.
+\[
+ \begin{array}{c|ccc}
+ \mathrm{GL1}&a_1&a_2&a_3\\
+ \mathrm{GL2}&b_1&b_2&b_3\\
+ \mathrm{GL3}&c_1&c_2&c_3
+ \end{array}
+\]
+\item \textbf{Position 1 in GL2 auf $0$ bringen:}
+$\mathrm{GL2}\leftarrow\mathrm{GL2}-\text{Faktor}\cdot\mathrm{GL1}$.
+\item \textbf{Position 1 in GL3 auf $0$ bringen:}
+$\mathrm{GL3}\leftarrow\mathrm{GL3}-\text{Faktor}\cdot\mathrm{GL1}$.
+\item \textbf{Position 2 in GL3 auf $0$ bringen:}
+$\mathrm{GL3}\leftarrow\mathrm{GL3}-\text{Faktor}\cdot\mathrm{GL2}$.
+\item \textbf{Nullzeile $(0\ 0\ 0)$: linear abhängig.}
+Drei Pivots $\ne0$: linear unabhängig.
 \end{enumerate}
-\textbf{Koordinaten $\to$ Parameter:}
-Eine Variable mit Koeffizient $\ne0$ isolieren;
-die anderen zwei sind freie Parameter.
-Für $c\ne0$, setze $x_1=\lambda$, $x_2=\mu$:
-\[
- x=\begin{pmatrix}0\\0\\-d/c\end{pmatrix}
- +\lambda\begin{pmatrix}1\\0\\-a/c\end{pmatrix}
- +\mu\begin{pmatrix}0\\1\\-b/c\end{pmatrix}.
-\]
-Bei $c=0$ stattdessen $x_1$ oder $x_2$ isolieren.
-\textbf{Kontrolle:} $n\cdot A+d=0$;
-$n\cdot u=n\cdot v=0$; $u,v$ nicht kollinear.
+\textbf{Faktor:} zu löschender Eintrag geteilt durch Eintrag
+der benutzten Zeile in derselben Spalte.
 
-\textbf{Beispiel aus dem Skript:} $x_1+2x_2+3x_3-6=0$:
-\[
- x=\begin{pmatrix}6\\0\\0\end{pmatrix}
- +\lambda\begin{pmatrix}-2\\1\\0\end{pmatrix}
- +\mu\begin{pmatrix}-3\\0\\1\end{pmatrix}.
-\]
-\textbf{Koordinaten $\to$ Hesse:} Linke Seite durch
-$\sqrt{a^2+b^2+c^2}$ teilen; Abstand = Betrag.
+\textbf{Pivot $0$:} zuerst Zeilen tauschen. Kein passender Pivot
+möglich: abhängig. Benutzte Zeile unverändert lassen.
+
+\textbf{Linearkombination:} Zeilenoperationen mitführen;
+Nullzeile auf die ursprünglichen Vektoren zurückführen.
 }
-\zeilenabstand
-\thema{7. Vektorrechnung, Punkte und Normierung}{
-\textbf{Kap.\ 2--3:} Komponentenweise rechnen:
+\rowgap
+\tile{3}{Dreieck}{
+\textbf{Seite $c=AB$ liegt gegenüber $C$.}
 \[
- u+v=\begin{pmatrix}u_1+v_1\\u_2+v_2\\u_3+v_3\end{pmatrix},\quad
- \lambda u=\begin{pmatrix}\lambda u_1\\\lambda u_2\\\lambda u_3\end{pmatrix}.
+ \boxed{\vec M_c=\frac{\vec A+\vec B}{2}}\quad\text{Mittelpunkt},
 \]
-Gegenvektor: $-u=(-1)u$. Gleichheit: jede Komponente
-muss übereinstimmen. In $\R^2$ dritte Zeile weglassen.
-\textbf{Ortsvektor:} $A=\overrightarrow{OA}$, vom Ursprung
-zum Punkt $A$. Freie Vektoren sind verschiebbar.
-\textbf{Verbindungsvektor:} Ziel minus Start:
 \[
- \overrightarrow{AB}=B-A,\quad d(A,B)=\|B-A\|_2.
+ \boxed{\vec S=\frac{\vec A+\vec B+\vec C}{3}}\quad\text{Schwerpunkt}.
 \]
-\textbf{Mittelpunkt / Dreiecksschwerpunkt:}
+\textbf{Normalenvektor zur Seite $AB$ in $\R^2$:}
 \[
- M=\frac{A+B}{2},\qquad S=\frac{A+B+C}{3}.
+ \vec v=\overrightarrow{AB}=\vec B-\vec A,\qquad
+ \vec n=\vct{v_y\\-v_x}.
 \]
-\textbf{Normierung}, $u\ne0$:
+\textbf{Projektion (Höhenfusspunkt):}
 \[
- u_0=\frac{u}{\|u\|_2},\quad\|u_0\|_2=1.
+ \boxed{\vec C'=\vec F_c=\vec C-
+ \frac{(\vec C-\vec A)\odot\vec n}{\vec n\odot\vec n}\,\vec n}.
 \]
-Vektor der Länge $L\ge0$ in Richtung $u$: $L\,u_0$.
-Den Nullvektor kann man nicht normieren.
+
+\textbf{Höhenvektor und Höhe:}
+$\vec h_c=\vec C-\vec F_c$, $\boxed{h_c=\norm{\vec h_c}}$.
+
+\textbf{Fläche:} $\mathcal A=\tfrac12\norm{\overrightarrow{AB}}\,h_c$.
 }
 \hfill
-\thema{8. Vektorraum und lineare Abhängigkeit}{
-\textbf{Kap.\ 1--2:} Für $u,v,w\in V$, $a,b\in\R$:
+\tile{4}{Abstand und Projektion auf Gerade}{
+\textbf{Gegeben:} $g:\vec x=\vec A+\lambda\vec v$, Punkt $\vec P$.
+$\vec A$: Aufpunkt; $\vec v\ne\vec0$: Richtung. Gilt in $\R^2,\R^3$.
+
+\textbf{Verbindungsvektor:} $\overrightarrow{AP}=\vec P-\vec A$.
+
+\textbf{Projektion in Geradenrichtung:}
 \[
- \begin{gathered}
- u+v\in V,\quad au\in V,\\
- u+0=u,\quad u+(-u)=0,\\
- u+v=v+u,\quad(u+v)+w=u+(v+w),\\
- a(bu)=(ab)u,\quad 1u=u,\\
- a(u+v)=au+av,\quad(a+b)u=au+bu.
- \end{gathered}
+ \boxed{\vec f=\frac{\overrightarrow{AP}\odot\vec v}
+ {\vec v\odot\vec v}\,\vec v}.
 \]
-Beispiele: $\R^n$, Polynome vom Grad $\le k$,
-reelle Funktionen (übliche Addition/Skalarmultiplikation).
-\textbf{Unterraumprüfung:} Nichtleer ($0\in U$),
-$u+v\in U$ und $au\in U$ für alle $u,v\in U$, $a\in\R$.
-Geraden/Ebenen durch $0$ sind Unterräume.
-\textbf{Linear abhängig:}
-$\lambda_1v_1+\cdots+\lambda_kv_k=0$ mit mindestens
-einem $\lambda_i\ne0$. Bestimmen mit Gauß:
-$(v_1\ \cdots\ v_k)\lambda=0$.
-\textbf{Kollinear:} Zwei Vektoren linear abhängig;
-für $v\ne0$: $u=\lambda v$. $\lambda>0$: parallel;
-$\lambda<0$: antiparallel.
-\textbf{Komplanar:} Drei Vektoren in $\R^3$ liegen in
-einer Ebene durch $0$ $\iff$ linear abhängig.
-Mehr als $n$ Vektoren in $\R^n$ sind stets abhängig.
+\textbf{Projektion:} $\boxed{\vec P'=\vec F=\vec A+\vec f}$.
+
+\textbf{Spiegelung:} $\boxed{\vec P''=2\vec P'-\vec P}$.
+
+\textbf{Lotvektor:} $\vec h=\vec P-\vec P'$.
+\textbf{Abstand:} $\boxed{h=\norm{\vec h}}$.
+
+\textbf{Vektorprojektion von $\vec b$ auf $\vec a\ne\vec0$:}
+\[
+ \vec f=\frac{\vec b\odot\vec a}{\vec a\odot\vec a}\,\vec a,
+ \qquad\vec h=\vec b-\vec f.
+\]
+$\vec f$: parallel zu $\vec a$; $\vec h$: senkrecht zu $\vec a$.
+}
+\rowgap
+\tile{5}{Vektoren, Länge und Winkel}{
+\textbf{Verbindung:} $\overrightarrow{AB}=\vec B-\vec A$.
+\textbf{Abstand der Punkte:} $\norm{\vec B-\vec A}$.
+
+\textbf{Skalarprodukt} (Orthonormalbasis):
+\[
+ \boxed{\vec a\odot\vec b=a_1b_1+a_2b_2+a_3b_3}.
+\]
+\textbf{Norm / Länge:}
+\[
+ \boxed{\norm{\vec a}=\sqrt{a_1^2+a_2^2+a_3^2}}.
+\]
+\textbf{Normieren:} $\vec a/\norm{\vec a}$ für $\vec a\ne\vec0$.
+
+\textbf{Senkrecht:} $\vec a\odot\vec b=0$.
+
+\textbf{Zwischenwinkel $\varphi$} ($\vec a,\vec b\ne\vec0$):
+\[
+ \boxed{\varphi=\arccos\!\left(\frac{\vec a\odot\vec b}
+ {\norm{\vec a}\,\norm{\vec b}}\right)}.
+\]
+Kleiner Geradenwinkel: Betrag im Zähler.
+Für Winkel in Grad: Taschenrechner auf \textbf{DEG}.
 }
 \hfill
-\thema{9. Normen und Gesetze des Skalarprodukts}{
-\textbf{Kap.\ 5:} Normeigenschaften für alle $u,v,\lambda$:
+\tile{12}{Vektorraum prüfen}{
+Für eine Menge $V\subseteq\R^n$ mit den üblichen Rechenregeln:
+\begin{enumerate}
+\item \textbf{Nullvektor:} $\vec0$ in die Bedingung einsetzen.
+Ist $\vec0\notin V$: \textbf{kein Vektorraum}.
+\item \textbf{Addition:} zwei beliebige Vektoren
+$\vec u,\vec v\in V$ wählen. Prüfen, ob ihre Summe die Bedingung von $V$ erfüllt:
 \[
- \begin{gathered}
- \|u\|\ge0,\quad\|u\|=0\iff u=0,\\
- \|\lambda u\|=|\lambda|\,\|u\|,\\
- \|u+v\|\le\|u\|+\|v\|.
- \end{gathered}
+ \boxed{\vec u+\vec v\in V}.
 \]
-\textbf{Normen in $\R^2$} (Aufgabe 5.6):
+\item \textbf{Multiplikation:} beliebiges $\lambda\in\R$
+und $\vec u\in V$ wählen. Prüfen, ob das Vielfache die Bedingung von $V$ erfüllt:
 \[
- \begin{aligned}
- \|u\|_1&=|u_1|+|u_2|,\\
- \|u\|_\infty&=\max\{|u_1|,|u_2|\},\\
- \|u\|_2&=\sqrt{u_1^2+u_2^2}.
- \end{aligned}
+ \boxed{\lambda\vec u\in V}.
 \]
-Eine verletzte Normeigenschaft genügt als Gegenbeweis.
-\textbf{Skalarproduktgesetze:}
-\[
- \begin{gathered}
- u\cdot v=v\cdot u,\\
- (\lambda u)\cdot v=\lambda(u\cdot v)=u\cdot(\lambda v),\\
- (u+v)\cdot w=u\cdot w+v\cdot w,\\
- u\cdot u=\|u\|_2^2.
- \end{gathered}
-\]
-\textbf{Cauchy--Schwarz:} $|u\cdot v|\le\|u\|_2\|v\|_2$.
-Für $u,v\ne0$ ist daher $-1\le\cos\varphi\le1$ und
-$0^\circ\le\varphi\le180^\circ$.
-Betragsregeln: $|ab|=|a||b|$, $|a+b|\le|a|+|b|$.
+\end{enumerate}
+\textbf{Alle drei erfüllt: Vektorraum.}
+Eine Bedingung verletzt: kein Vektorraum.
+
+\textbf{Nachweis:} für beliebige Vektoren und Zahlen zeigen.
+\textbf{Widerlegung:} ein Gegenbeispiel reicht.
+
+\textbf{Bei Parameterdarstellung:} Summe und Vielfaches müssen
+wieder dieselbe Form mit zulässigem Parameter haben.
+Bei beschränktem Parameter den erlaubten Bereich prüfen.
+Verschobene Darstellungen zuerst vereinfachen.
 }
 \newpage
-\kopf{2}
-\thema{10. Basis und Komponenten bestimmen}{
-\textbf{Kap.\ 5.4--5.5:} Basis $e_1,\ldots,e_n$:
-linear unabhängig und jeder Vektor ist darstellbar als
-\[
- v=v_1e_1+v_2e_2+\cdots+v_ne_n.
-\]
-Die Koeffizienten $v_i$ sind die Komponenten in dieser
-Basis; die Dimension ist die Anzahl der Basisvektoren.
-\textbf{Orthogonalbasis:} $e_i\cdot e_j=0$ für $i\ne j$.
-\textbf{Orthonormalbasis:} zusätzlich $\|e_i\|_2=1$.
-\textbf{Komponenten in einer Orthogonalbasis:}
-\[
- v_i=\frac{v\cdot e_i}{e_i\cdot e_i}.
-\]
-In einer Orthonormalbasis: $v_i=v\cdot e_i$.
-\textbf{Allgemeine Basis:} Das Gleichungssystem
-$v=v_1e_1+\cdots+v_ne_n$ nach den $v_i$ lösen (Gauß).
-\textbf{Nicht normierte Orthogonalbasis:} Setze
-$c_i=\|e_i\|_2^2$. Dann gelten die gewichteten Formeln:
-\[
- \begin{aligned}
- u\cdot v&=c_1u_1v_1+\cdots+c_nu_nv_n,\\
- \|v\|_2^2&=c_1v_1^2+\cdots+c_nv_n^2.
- \end{aligned}
-\]
-Polynombasis $1,t,t^2$: Komponenten $(a,b,c)^T$
-bedeuten das Polynom $a+bt+ct^2$.
-}
-\hfill
-\thema{11. Vektorprodukt, Flächen und Spatprodukt}{
-\textbf{Kap.\ 6:} $u\times v$ steht senkrecht auf $u,v$;
-Richtung: rechte Hand. Komponentenform siehe Kachel 4
-(rechtshändige Orthonormalbasis).
-\[
- \|u\times v\|_2=\|u\|_2\|v\|_2\sin\varphi.
-\]
-\textbf{Flächen:} Parallelogramm $=\|u\times v\|_2$;
-Dreieck $ABC$: $\tfrac12\|(B-A)\times(C-A)\|_2$.
-\textbf{Gesetze:}
-\[
- \begin{gathered}
- u\times v=-v\times u,\quad u\times u=0,\\
- u\times(v+w)=u\times v+u\times w,\\
- (\lambda u)\times v=\lambda(u\times v)=u\times(\lambda v),\\
- \|u\times v\|_2\le\|u\|_2\|v\|_2.
- \end{gathered}
-\]
-Nicht assoziativ: Klammern nicht beliebig verschieben.
-$e_1\times e_2=e_3$, $e_2\times e_3=e_1$,
-$e_3\times e_1=e_2$; umgekehrt jeweils Minuszeichen.
-\textbf{Spatprodukt und Volumen:}
-\[
- [u,v,w]=u\cdot(v\times w),\quad V=|[u,v,w]|.
-\]
-$[u,v,w]=[v,w,u]=[w,u,v]$;
-Tausch zweier Vektoren kehrt das Vorzeichen um.
-\textbf{Abhängigkeit:} $[u,v,w]=0\iff$ komplanar.
-Für zwei Vektoren: $u\times v=0\iff$ kollinear.
-}
-\hfill
-\thema{12. Schnittmengen und Lage von Ebenen}{
-\textbf{Kap.\ 7.5:} $E_i:n_i\cdot x+d_i=0$, $n_i\ne0$.
-\textbf{Zwei Ebenen:}
-\begin{itemize}
- \item $n_1\times n_2\ne0$: Schnittgerade;
- Richtungsvektor $v=n_1\times n_2$.
- \item $n_2=k n_1$: parallel. Für $d_2=k d_1$
- identisch, sonst kein Schnitt.
-\end{itemize}
-\textbf{Schnitt berechnen:} Beide Ebenengleichungen
-als LGS lösen. Bei einer freien Variablen $t$:
-$x=A+tv$; $A$ erhält man durch $t=0$.
-\textbf{Drei Ebenen:} Gauß auf das LGS mit drei
-Unbekannten anwenden:
-\begin{itemize}
- \item Widerspruch $0=\beta\ne0$: keine Schnittmenge.
- \item Drei Pivots: genau ein Punkt.
- \item Zwei Pivots: eine freie Variable, Schnittgerade.
- \item Ein Pivot: zwei freie Variablen, gemeinsame Ebene.
-\end{itemize}
-\textbf{Homogenes LGS} ($d_i=0$): Ursprung ist immer
-Lösung; die Schnittmenge ist ein Unterraum.
-\textbf{Punktprobe:} Alle beteiligten Gleichungen erfüllen.
-Bei einer Schnittgeraden müssen sowohl $A$ als auch
-$A+v$ in beiden Ebenen liegen.
-}
-\zeilenabstand
-\thema{13. Lineare Gleichungssysteme}{
-$Ax=b$ mit $n$ Unbekannten: erweiterte Matrix $[A\mid b]$.
+\head{2}{Gauss, Vektorprodukt, Ebenen und LGS-Lösungen}
+\tile{6}{Gauss und Lösbarkeit}{
+\textbf{Wie in Serie 5:} $A$: Koeffizientenmatrix;
+$A_e$: erweiterte Matrix (mit rechter Seite).
+$L_1,L_2,\ldots$: Gleichungen bzw.\ Zeilen.
 
-\textbf{Gauß-Verfahren:}
-\begin{enumerate}
- \item Pivotspalte wählen, ggf.\ Zeilen tauschen.
- \item Einträge unter dem Pivot eliminieren.
- \item Rückwärtseinsetzen oder zur reduzierten
- Zeilenstufenform weiterrechnen.
-\end{enumerate}
+\textbf{Erlaubt:} Zeilen tauschen, mit Zahl $\ne0$ multiplizieren,
+Vielfaches einer anderen Zeile addieren.
 \[
- \begin{gathered}
- Ax=b\text{ lösbar}\\
- \iff\rang(A)=\rang([A\mid b]).
- \end{gathered}
+ L_i\leftarrow L_i+\lambda L_j\qquad(i\ne j).
 \]
-\textbf{Erlaubte Zeilenoperationen:} Zeilen tauschen;
-mit einer Zahl $\ne0$ multiplizieren; Vielfaches einer
-anderen Zeile addieren.
-\[
- Z_i\leftarrow Z_i-\frac{a_{ik}}{a_{kk}}Z_k\quad(a_{kk}\ne0).
-\]
-Die benutzte Pivotzeile $Z_k$ bleibt dabei unverändert.
-$0=\beta\ne0$: keine Lösung; $0=0$: redundante Zeile.
-
-Bei Lösbarkeit:
-\begin{itemize}
- \item $\rang(A)=n$: genau eine Lösung.
- \item $\rang(A)<n$: freie Variablen; über $\R$ unendlich
- viele Lösungen.
-\end{itemize}
-$Ax=0$ hat immer die Lösung $x=0$.
-
-\textbf{Allgemeine Lösung:}
-$x=x_p+x_h$, wobei $Ax_p=b$ und $x_h\in\kernel(A)$.
-}
-\hfill
-\thema{14. Gaußsche Elimination: Rechenbeispiel}{
-Ziel: Die erweiterte Matrix durch elementare
-Zeilenoperationen in Zeilenstufenform bringen.
-
-\textbf{Beispiel:}
-\[
- \begin{aligned}
- x+y+z&=6,\\
- 2x-y+z&=3,\\
- x+2y-z&=2.
- \end{aligned}
-\]
-\[
- \left(\begin{array}{ccc|c}
- 1&1&1&6\\2&-1&1&3\\1&2&-1&2
- \end{array}\right)
-\]
-\textbf{1. Erste Spalte eliminieren:}
-$Z_2\leftarrow Z_2-2Z_1$, $Z_3\leftarrow Z_3-Z_1$.
-\[
- \left(\begin{array}{ccc|c}
- 1&1&1&6\\0&-3&-1&-9\\0&1&-2&-4
- \end{array}\right)
-\]
-\textbf{2. Pivot tauschen und weiter eliminieren:}
-$Z_2\leftrightarrow Z_3$, danach
-$Z_3\leftarrow Z_3+3Z_2$.
-\[
- \left(\begin{array}{ccc|c}
- 1&1&1&6\\0&1&-2&-4\\0&0&-7&-21
- \end{array}\right)
-\]
-\textbf{3. Rückwärtseinsetzen:}
-$z=3$, $y=2$, $x=1$; also $(x,y,z)=(1,2,3)$.
-
-Pivot $=0$: geeignete Zeile tauschen. Eine Zeile
-$0\;0\;0\mid b$ mit $b\ne0$ bedeutet: keine Lösung.
-}
-\hfill
-\thema{15. Geraden in der Ebene}{
-Durch $P=(p_1,p_2)^T$ mit $v=(v_1,v_2)^T\ne0$:
-\[
- g:\quad\begin{pmatrix}x\\y\end{pmatrix}
- =\begin{pmatrix}p_1\\p_2\end{pmatrix}
- +t\begin{pmatrix}v_1\\v_2\end{pmatrix}.
-\]
-$t\in\R$.
-Für $v_1\ne0$: Parameter $t$ eliminieren.
-\[
- y-p_2=\frac{v_2}{v_1}(x-p_1).
-\]
-\[
- \begin{gathered}
- y=mx+b,\qquad m=\frac{v_2}{v_1},\\
- b=p_2-mp_1.
- \end{gathered}
-\]
-\textbf{Normalenform} (auch für vertikale Geraden):
-\[
- v_2(x-p_1)-v_1(y-p_2)=0.
-\]
-Für $v_1=0$ ist die Gerade vertikal: $x=p_1$.
-\textbf{Durch zwei Punkte:} $v=Q-P$, $P\ne Q$.
-\textbf{Koordinaten $\to$ Parameter:}
-Für $ax+by+d=0$, $(a,b)\ne(0,0)$:
-\[
- n=\begin{pmatrix}a\\b\end{pmatrix},\qquad
- v=\begin{pmatrix}b\\-a\end{pmatrix}.
-\]
-Aufpunkt bestimmen: für $b\ne0$ wähle $P=(0,-d/b)^T$;
-sonst $P=(-d/a,0)^T$. Dann $x=P+tv$.
-\textbf{Schnittpunkt:} Zwei Geraden in Koordinatenform als LGS
-lösen; $x$ bestimmen, einsetzen, $y$ berechnen; $S(x\mid y)$.
-\textbf{Funktionsform $\to$ Parameter:} Für $y=mx+b$:
-$P=(0,b)^T$, $v=(1,m)^T$.
-}
-\renewcommand{\seitenbereich}{Spätere Themen}
-\newpage
-\kopf{3}
-\thema{16. Vektorräume und Basen}{
-\[
- \begin{gathered}
- \spann(v_1,\ldots,v_k)\\
- =\bigl\{\lambda_1v_1+\cdots+\lambda_kv_k:\\
- \lambda_1,\ldots,\lambda_k\in\K\bigr\}.
- \end{gathered}
-\]
-\textbf{Linear unabhängig:}
-$\lambda_1v_1+\cdots+\lambda_kv_k=0$ gilt nur, wenn alle $\lambda_i=0$.
-
-\textbf{Basis:} linear unabhängiges Erzeugendensystem.
-Die Anzahl der Basisvektoren ist die Dimension.
-
-Für $A\in\K^{m\times n}$:
-\[
- \dim\kernel(A)+\rang(A)=n,
-\]
-\[
- \rang(A)=\dim\bild(A).
-\]
-\textbf{Bildbasis:} Pivotspalten der \emph{ursprünglichen}
-Matrix $A$ verwenden.
-
-\textbf{Kernbasis:} $Ax=0$ lösen; für jede freie Variable
-je einen Basisvektor bestimmen.
-}
-\hfill
-\thema{17. Matrizen und Inverse}{
-$A\in\K^{m\times n}$, $B\in\K^{n\times p}$:
-\[
- \begin{aligned}
- (AB)_{ij}&=a_{i1}b_{1j}+a_{i2}b_{2j}\\
- &\quad+\cdots+a_{in}b_{nj}.
- \end{aligned}
-\]
-\textbf{Regel:} Zeile $i$ von $A$ mit Spalte $j$ von $B$: einzelne Produkte bilden und addieren.
-\[
- \begin{gathered}
- (AB)^T=B^TA^T,\\ AI_n=I_mA=A.
- \end{gathered}
-\]
-Im Allgemeinen gilt $AB\ne BA$.
-
-Für invertierbare quadratische Matrizen:
-\[
- \begin{gathered}
- AA^{-1}=A^{-1}A=I,\\
- (AB)^{-1}=B^{-1}A^{-1}.
- \end{gathered}
-\]
-Für $A=\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}$,
-$ad-bc\ne0$:
-\[
- A^{-1}=\frac{1}{ad-bc}
- \begin{pmatrix}d&-b\\-c&a\end{pmatrix}.
-\]
-}
-\hfill
-\thema{18. Determinante und Rang}{
-\[
- \det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc.
-\]
-\[
- \det(AB)=\det(A)\det(B).
-\]
-Für $A\in\K^{n\times n}$ sind äquivalent:
-\[
- \begin{gathered}
- \det(A)\ne0\iff\rang(A)=n\\
- \iff A^{-1}\text{ existiert}\\
- \iff\kernel(A)=\{0\}.
- \end{gathered}
-\]
-\textbf{Zeilenumformungen und Determinante:}
-\begin{itemize}
- \item Zeilentausch: Vorzeichenwechsel.
- \item Zeile mit $c$ multiplizieren: Determinante mal $c$.
- \item Vielfaches einer anderen Zeile addieren: unverändert.
-\end{itemize}
-Bei Dreiecksmatrizen: Produkt der Diagonaleinträge.
-
-\textbf{Rang:} Anzahl der Pivots nach dem Gauß-Verfahren.
-}
-\zeilenabstand
-\thema{19. Lineare Abbildungen}{
-$T:V\to W$ ist linear, wenn
-\[
- \begin{gathered}
- T(u+v)=T(u)+T(v),\\
- T(\lambda u)=\lambda T(u).
- \end{gathered}
-\]
-Für $T(x)=Ax$, $A\in\K^{m\times n}$:
-\[
- \kernel(T)=\{x\in\K^n:Ax=0\},
-\]
-\[
- \bild(T)=\{Ax:x\in\K^n\}.
-\]
-Die Spalten von $A$ sind die Bilder der
-Standardbasisvektoren: $A=(T(e_1),\ldots,T(e_n))$.
-
-\textbf{Injektiv:} $\kernel(T)=\{0\}$.
-
-\textbf{Surjektiv:} $\bild(T)=W$.
-}
-\hfill
-\thema{20. Eigenwerte und Eigenvektoren}{
-$A\in\K^{n\times n}$: $\lambda$ ist Eigenwert, wenn für
-$v\ne0$ gilt $Av=\lambda v$.
-
-\textbf{Berechnung:}
-\begin{enumerate}
- \item $p_A(\lambda)=\det(A-\lambda I)$ berechnen.
- \item $p_A(\lambda)=0$ lösen: Eigenwerte.
- \item Für jeden Eigenwert $(A-\lambda I)v=0$ lösen.
-\end{enumerate}
-\[
- E_\lambda=\kernel(A-\lambda I).
-\]
-\textbf{Algebraische Vielfachheit:} Vielfachheit der
-Nullstelle $\lambda$ in $p_A$.
-
-\textbf{Geometrische Vielfachheit:} $\dim E_\lambda$.
-
-Über $\mathbb C$, Eigenwerte mit Vielfachheiten zählen:
-\[
- \begin{gathered}
- \spur(A)=\lambda_1+\lambda_2+\cdots+\lambda_n,\\
- \det(A)=\lambda_1\cdot\lambda_2\cdots\lambda_n.
- \end{gathered}
-\]
-}
-\hfill
-\thema{21. Diagonalisierung}{
-$A\in\K^{n\times n}$ ist genau dann über $\K$
-diagonalisierbar, wenn es $n$ linear unabhängige
-Eigenvektoren über $\K$ gibt.
-
 \textbf{Vorgehen:}
 \begin{enumerate}
- \item Eigenwerte und Eigenraumbasen bestimmen.
- \item $n$ unabhängige Eigenvektoren als Spalten von $P$
- anordnen.
- \item Zugehörige Eigenwerte in derselben Reihenfolge
- auf die Diagonale von $D$ schreiben.
+\item Pivot (erster Eintrag $\ne0$ einer Zeile) wählen.
+Falls nötig, Zeilen tauschen.
+\item Darunter Nullen erzeugen; benutzte Zeile beibehalten.
+\item Nächste Zeile; am Ende von unten rückwärts einsetzen.
 \end{enumerate}
-\[
- A=PDP^{-1},\qquad D=P^{-1}AP,
-\]
-\[
- D=\operatorname{diag}(\lambda_1,\ldots,\lambda_n).
-\]
-Potenzen für $k\ge0$:
-\[
- \begin{gathered}
- A^k=PD^kP^{-1},\\
- D^k=\operatorname{diag}(\lambda_1^k,\ldots,\lambda_n^k).
- \end{gathered}
-\]
-}
-\zeilenabstand
-\thema{22. Orthogonale Matrizen}{
-Eine reelle quadratische Matrix $Q$ ist orthogonal, wenn
-\[
- Q^TQ=I.
-\]
-Dann gilt:
-\[
- Q^{-1}=Q^T,\qquad QQ^T=I,
-\]
-\[
- \|Qx\|_2=\|x\|_2.
-\]
-Die Spalten (und Zeilen) bilden eine Orthonormalbasis:
-\[
- q_i\cdot q_j=
- \begin{cases}1,&i=j,\\0,&i\ne j.\end{cases}
-\]
-\textbf{Orthonormal:} paarweise senkrecht und jeweils Länge $1$.
-
-Orthogonale Abbildungen erhalten Längen und Winkel.
+\textbf{Rang:} Anzahl Pivots. Bei $n$ Unbekannten:
+\begin{itemize}
+\item $0=c$, $c\ne0$: \textbf{keine Lösung}.
+\item Kein Widerspruch, $\rang(A)=n$: \textbf{eine Lösung}.
+\item Kein Widerspruch, $\rang(A)<n$: \textbf{unendlich viele};
+$n-\rang(A)$ freie Variablen.
+\end{itemize}
+$0=0$ streichen. Homogen (rechte Seite $0$): immer lösbar.
 }
 \hfill
-\thema{23. Kleinste Quadrate}{
-Für $A\in\R^{m\times n}$ mit linear unabhängigen Spalten:
+\tile{7}{Vektorprodukt, Fläche und Volumen}{
+\textbf{Kreuzprodukt:}
 \[
- \min_x\|Ax-b\|_2^2.
+ \boxed{\vec a\times\vec b=\vct{
+ a_2b_3-a_3b_2\\a_3b_1-a_1b_3\\a_1b_2-a_2b_1}}.
 \]
-\textbf{Normalengleichungen:}
-\[
- \boxed{A^TA\hat x=A^Tb}.
-\]
-$A^TA$ ist invertierbar; damit
-\[
- \hat x=(A^TA)^{-1}A^Tb.
-\]
-\textbf{Vorgehen:} $A^TA$ und $A^Tb$ berechnen,
-anschließend das Gleichungssystem für $\hat x$ lösen.
+Ergebnis steht senkrecht auf $\vec a$ und $\vec b$.
+Vertauschen ändert das Vorzeichen.
 
-\textbf{Restvektor:} $r=b-A\hat x$. Er steht senkrecht
-auf jeder Spalte von $A$:
+\textbf{Flächen:}
 \[
- A^Tr=0.
+ \mathcal A_{\text{Parallelogramm}}=\norm{\vec a\times\vec b},
 \]
-$A\hat x$ ist die orthogonale Projektion von $b$
-auf $\bild(A)$.
+\[
+ \boxed{\mathcal A_{\triangle ABC}
+ =\tfrac12\norm{\overrightarrow{AB}\times\overrightarrow{AC}}}.
+\]
+\textbf{Spatvolumen:}
+\[
+ \boxed{V=|\vec a\odot(\vec b\times\vec c)|}.
+\]
+\textbf{Abhängigkeit:} $\vec a\times\vec b=\vec0$
+ genau dann, wenn $\vec a,\vec b$ abhängig sind.
+Drei Vektoren in $\R^3$ komplanar genau dann,
+wenn $\vec a\odot(\vec b\times\vec c)=0$.
 }
+\rowgap
+\tile{8}{Ebenen darstellen und umwandeln}{
+\textbf{Durch drei nicht kollineare Punkte:}
+$\vec u=\vec B-\vec A$, $\vec v=\vec C-\vec A$.
+\[
+ \boxed{E:\vec x=\vec A+\lambda\vec u+\nu\vec v}.
+\]
+\textbf{Parameter $\to$ Koordinaten durch Einsetzen:}
+\begin{enumerate}[label=\arabic*.]
+\item Komponentengleichungen aufschreiben.
+\item Nach $\lambda$ (oder $t$) auflösen und in die anderen Gleichungen einsetzen; auch $\nu$ beseitigen.
+\item Vereinfachen bis $n_1x+n_2y+n_3z+d=0$.
+\end{enumerate}
 
+\textbf{Parameter $\to$ Normalenform:}
+\[
+ \vec n=\vec u\times\vec v\ne\vec0,\qquad
+ \boxed{(\vec x-\vec A)\odot\vec n=0}.
+\]
+\textbf{Koordinatenform wie im Skript:}
+\[
+ \boxed{n_1x+n_2y+n_3z+d=0},
+ \qquad d=-\vec A\odot\vec n.
+\]
+
+\textbf{Koordinaten $\to$ Parameter:} Eine Variable isolieren,
+zwei übrige als Parameter setzen; nach Parametern sammeln.
+
+\textbf{Punktprobe:} Punkt in Koordinatenform einsetzen.
+}
+\hfill
+\tile{9}{Abstand und Projektion auf Ebene}{
+\textbf{Gegeben:} Aufpunkt $\vec A$, Normalenvektor $\vec n\ne\vec0$,
+Punkt $\vec P$. Bei Parameterform $\vec n=\vec u\times\vec v$.
+
+\textbf{Hesse-Normalenform wie in Kap. 7:}
+\[
+ \boxed{h(\vec P)=\frac{(\vec P-\vec A)\odot\vec n}{\norm{\vec n}}}.
+\]
+$h(\vec P)$ kann negativ sein. \textbf{Abstand:} $|h(\vec P)|$.
+
+Bei $ax+by+cz+d=0$, $\vec P=(p_1,p_2,p_3)^T$:
+\[
+ h(\vec P)=\frac{ap_1+bp_2+cp_3+d}{\sqrt{a^2+b^2+c^2}}.
+\]
+\textbf{Projektion (Lotfusspunkt):}
+\[
+ \boxed{\vec P'=\vec F=\vec P-h(\vec P)\,\frac{\vec n}{\norm{\vec n}}}.
+\]
+\textbf{Spiegelung:} $\boxed{\vec P''=2\vec P'-\vec P}$.
+
+\textbf{Ursprungsabstand:} $|d|/\sqrt{a^2+b^2+c^2}$.
+}
+\rowgap
+\tile{10}{Schnittmengen mit Ebenen}{
+\textbf{Gerade mit Ebene:}
+$\vec x=\vec A+\lambda\vec v$ in $\vec n\odot\vec x+d=0$ einsetzen:
+\[
+ (\vec n\odot\vec v)\lambda+\vec n\odot\vec A+d=0.
+\]
+\begin{itemize}
+\item $\vec n\odot\vec v\ne0$: $\lambda$ berechnen,
+$\vec S=\vec A+\lambda\vec v$.
+\item $\vec n\odot\vec v=0$: Aufpunkt einsetzen.
+Erfüllt er die Ebene, liegt die Gerade darin; sonst kein Schnitt.
+\end{itemize}
+\textbf{Zwei Ebenen $\vec n_i\odot\vec x+d_i=0$:}
+\begin{itemize}
+\item $\vec n_1\times\vec n_2\ne\vec0$: Schnittgerade.
+Beide Gleichungen als LGS lösen; eine freie Variable.
+\item $\vec n_2=k\vec n_1$: bei $d_2=kd_1$ identisch,
+sonst parallel ohne Schnitt ($k$: reelle Zahl).
+\end{itemize}
+\textbf{Drei Ebenen:} Gauss auf alle Gleichungen.
+Widerspruch: kein Schnitt. Sonst:
+\[
+ \begin{array}{c|ccc}
+ \rang(A)&3&2&1\\\hline
+ \text{Schnitt}&\text{Punkt}&\text{Gerade}&\text{Ebene}
+ \end{array}
+\]
+\textbf{Homogen:} alle $d_i=0$; Ursprung immer im Schnitt.
+}
+\hfill
+\tile{11}{LGS-Lösung als Gerade oder Ebene}{
+\begin{enumerate}
+\item \textbf{Freie Variablen bestimmen:} Variablen ohne Pivot
+als Parameter $\lambda,\nu$ setzen.
+\item \textbf{Übrige Variablen berechnen:} von unten rückwärts
+einsetzen; nach Parametern sammeln.
+\item \textbf{Aufpunkt $\vec P$:} alle freien Parameter $0$ setzen.
+\item \textbf{Richtungsvektoren $\vec u,\vec v$:} rechte Seite
+des LGS $0$ setzen. Je einen freien Parameter $1$, übrige $0$;
+LGS lösen.
+\end{enumerate}
+\textbf{Eine freie Variable: Schnittgerade}
+\[
+ \boxed{\vec x=\vec P+\lambda\vec u},\quad\lambda\in\R.
+\]
+\textbf{Zwei freie Variablen: gemeinsame Ebene}
+\[
+ \boxed{\vec x=\vec P+\lambda\vec u+\nu\vec v},
+ \quad\lambda,\nu\in\R.
+\]
+$\vec P$: Aufpunkt; $\vec u,\vec v$: Richtungsvektoren.
+}
 \end{document}
