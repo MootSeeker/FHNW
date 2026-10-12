@@ -73,10 +73,10 @@ class ForestPanel extends JPanel {
 		final int stemY = y - TREE_STEM_HEIGHT; 
 		
 		// Calculated leef1 position from stem
-		final int leef1X = x - (TREE_LEAF_WIDTH / 2); 
-		final int leef1Y = stemY + OVER_LEAP - TREE_LEAF1_HEIGHT; 
-		final int leef2X = x - (TREE_LEAF_WIDTH / 2); 
-		final int leef2Y = stemY + OVER_LEAP - TREE_LEAF2_HEIGHT; 
+		final int leaf1X = x - (TREE_LEAF_WIDTH / 2); 
+		final int leaf1Y = stemY + OVER_LEAP - TREE_LEAF1_HEIGHT; 
+		final int leaf2X = x - (TREE_LEAF_WIDTH / 2); 
+		final int leaf2Y = stemY + OVER_LEAP - TREE_LEAF2_HEIGHT; 
 		
 		// Draw stem
 		g.setColor(getStemColor( ));
@@ -84,10 +84,10 @@ class ForestPanel extends JPanel {
 		
 		// Draw leafs from back to front
 		g.setColor(getFoliageColor());
-		g.fillOval(leef1X, leef1Y, TREE_LEAF_WIDTH, TREE_LEAF1_HEIGHT);
+		g.fillOval(leaf1X, leaf1Y, TREE_LEAF_WIDTH, TREE_LEAF1_HEIGHT);
 		
 		g.setColor(getFoliageColor());
-		g.fillOval(leef2X, leef2Y, TREE_LEAF_WIDTH, TREE_LEAF2_HEIGHT);
+		g.fillOval(leaf2X, leaf2Y, TREE_LEAF_WIDTH, TREE_LEAF2_HEIGHT);
 		
 		// Draw point at x/y position
 		g.setColor(Color.PINK);
