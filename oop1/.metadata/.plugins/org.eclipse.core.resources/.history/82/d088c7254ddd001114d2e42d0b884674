@@ -1,0 +1,60 @@
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+
+import javax.swing.Icon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+class PersonenPanel extends JPanel {
+	
+	private static Person person1; 
+	private static Person person2; 
+	
+	/**
+	 * <pre>
+	 * - NullLayout setzen
+	 * - person1 mit Mozart erzeugen
+	 * - person2 mit Beethoven erzeugen
+	 * - person1 bei Koordinaten (15, 0, 215, 350) hinzufuegen
+	 * - person2 bei Koordinaten (230, 0, 215, 350) hinzufuegen
+	 */
+	public PersonenPanel(){
+		setLayout(null);
+		
+		person1 = new Person("Ambros", "Ellenberger", "Mozart.jpg");
+		person2 = new Person("Mat", "Alboni", "clef.png"); 
+	
+	    person1.setBounds(15, 0, 215, 350);
+	    person2.setBounds(230, 0, 215, 350);
+
+	    add(person1);
+	    add(person2);
+	    
+	}
+}
+
+public class PersonenPanelFrame extends JFrame {
+	private PersonenPanel view;
+
+	public PersonenPanelFrame() {
+		view = new PersonenPanel();
+		view.setPreferredSize(new Dimension(460, 380));
+		add(view);
+		pack();
+		
+		setTitle("|FHNW|EIT|OOP|Personen - Panel|");
+		setIconImage(Utility.loadResourceImage("clef.png"));
+		setResizable(true);
+		setVisible(true);
+		setLocationRelativeTo(null);
+	}
+
+	public static void main(String args[]) {
+		PersonenPanelFrame frame = new PersonenPanelFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//damit Fenster wie gewohnt geschlossen werden kann
+	}
+}

@@ -1,0 +1,54 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.sound.sampled.Clip;
+import javax.swing.JPanel;
+
+
+public class Person extends JPanel implements MouseListener {
+	private String name = ""; 
+	private String vorname = ""; 
+	private boolean paintFlag = false; 
+	
+	private Image Bild; 
+	
+	public Person(String vorname, String name){
+		this.name = name; 
+		this.vorname = vorname; 
+	}
+	
+	public Person(String vorname, String name, String bildDatei) {
+		this.name = name; 
+		this.vorname = vorname; 
+		
+		this.Bild = Utility.loadResourceImage(bildDatei); 
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g); 
+	}
+	
+	public void mousePressed(MouseEvent e) {
+		
+	}
+	
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+	
+	public void mouseClicked(MouseEvent e) {
+		
+	}
+	
+	public void mouseEntered(MouseEvent e) {
+	
+	}
+
+	public void mouseExited(MouseEvent e) {
+	
+	}
+
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename Java project &apos;U7_EigeneKlassen_Vorlage&apos; to &apos;U7_EigeneKlassen&apos;&#x0D;&#x0A;- Original element: &apos;U7_EigeneKlassen_Vorlage&apos;&#x0D;&#x0A;- Renamed element: &apos;U7_EigeneKlassen_Vorlage&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename Java project &apos;U7_EigeneKlassen_Vorlage&apos;" flags="7" id="org.eclipse.jdt.ui.rename.java.project" input="=U7_EigeneKlassen_Vorlage" name="U7_EigeneKlassen" references="true" stamp="1793806127513" version="1.0"/>
+</session>

@@ -1,0 +1,71 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+class BallonPanel extends JPanel implements ActionListener {
+	private TraceV7 trace = new TraceV7(this);
+	private JButton btWachsen = new JButton("Wachsen");
+	private JButton btSchrumpfen = new JButton("Schrumpfen");
+	private Ballon meinBallon = new Ballon(200, 70, 50);
+	private Ballon meinStandardBallon = new Ballon( ); 
+	
+
+	private SimpleTimer updateTimer;
+
+	public BallonPanel() {
+		trace.constructorCall();
+		setLayout(null);
+		
+		add(btWachsen).setBounds(20, 525, 250, 20);
+		btWachsen.addActionListener(this);
+		
+		add(btSchrumpfen).setBounds(300, 525, 250, 20);
+		btSchrumpfen.addActionListener(this);
+	}
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		//3. meinBallon anzeigen
+		meinBallon.anzeigen(g);
+		meinStandardBallon.anzeigen(g);
+		
+		if(meinBallon.equals(meinStandardBallon)) {
+			g.drawString("Beide Ballone sind gleich.", 10, 250);
+		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		trace.eventCall();
+		// 4. wachsen und schrumpfen implementieren
+		if(e.getSource().equals(btWachsen)) {
+			meinBallon.groesseVeraendern(10);
+		} else if (e.getSource().equals(btSchrumpfen)) {
+			meinBallon.groesseVeraendern(-10);
+		}
+		
+		repaint();
+	}
+}
+
+public class BallonPanelFrame extends JFrame {
+	private TraceV7 tr = new TraceV7(this);
+	private BallonPanel view;
+
+	public BallonPanelFrame() {
+		tr.constructorCall();
+		view = new BallonPanel();
+		view.setPreferredSize(new Dimension(600,600));
+		add(view);
+		pack();
+		setTitle("Ballon-Panel");
+		setResizable(true);
+		setVisible(true);
+		setLocationRelativeTo(null);
+	}
+
+	public static void main(String args[]) {
+		TraceV7.mainCall();
+		BallonPanelFrame frame = new BallonPanelFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+}

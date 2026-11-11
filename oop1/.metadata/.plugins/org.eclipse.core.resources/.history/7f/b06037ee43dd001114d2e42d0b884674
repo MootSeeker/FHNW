@@ -1,0 +1,21 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.sound.sampled.Clip;
+import javax.swing.JPanel;
+
+
+public class Person {
+	private String name; 
+	private String vorname; 
+	
+	private Image Bild; 
+	
+	public Person(String vorname, String name){
+		this.name = name; 
+		this.vorname = vorname; 
+	}
+}
