@@ -1,0 +1,45 @@
+# Eclipse workspace state and local IDE settings
+.metadata/
+.idea/
+*.iml
+.vscode/
+
+# Java build output (including copied resources)
+bin/
+classes/
+target/
+build/
+out/
+.gradle/
+*.class
+
+# Python environments and caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Jupyter autosaves
+.ipynb_checkpoints/
+
+# Local secrets (keep shareable examples)
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Operating system and temporary editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+~$*
+*.swp
+*.swo
+*.tmp
+*.bak
